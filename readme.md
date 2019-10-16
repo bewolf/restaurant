@@ -1,6 +1,6 @@
 ## About Restaurant
 
-Restaurant is a web application for any type of retail outlets in this industry. Restaurant, fast food, night club, snack bar, tavern and more. Hire and fire <b> Currently under construction. v.0 :)</b>
+Restaurant is a web application for any type of retail outlets in this industry. Restaurant, fast food, night club, snack bar, tavern and more. Hire and fire <b>Currently under construction. v.0 :)</b>
 
 ## Security Vulnerabilities
 
