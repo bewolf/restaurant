@@ -10,11 +10,18 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
+Auth::routes();
+
+// All routes that needs a logged in user
+
+Route::group(['middleware' => 'auth'], function () {
+
+
+});
+
+// All routes that need no authentication
 
 Route::get('/', function () {
     return view('welcome');
 });
-
-Auth::routes();
-
 Route::get('/home', 'HomeController@index')->name('home');
