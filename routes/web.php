@@ -10,6 +10,9 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
+
+use Illuminate\Support\Facades\Route;
+
 Auth::routes(['register' => false]);
 
 
@@ -21,15 +24,13 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::get('/home', 'HomeController@index')->name('home');
 });
-
+// Manager routes
 Route::group(['middleware' => ['auth', 'manager']], function () {
     Route::get('/admin_panel', function () {
-        if (auth()->user()->username == 'manager') {
-            return view('admin_panel');
-        }
-        //Need refactor on next row
-        return back();
+        return view('admin_panel');
     })->name('admin_panel');
+
+
 });
 
 // All routes that need no authentication

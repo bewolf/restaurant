@@ -1,5 +1,14 @@
 @import url(https://fonts.googleapis.com/css?family=Nunito);@charset "UTF-8";
 
+#logo {
+  max-height: 50px;
+}
+
+#app > nav > div,
+#app > nav {
+  background-color: #4DC8E9 !important;
+}
+
 /*!
  * Bootstrap v4.3.1 (https://getbootstrap.com/)
  * Copyright 2011-2019 The Bootstrap Authors

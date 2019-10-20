@@ -23,15 +23,15 @@
 <div id="app">
     <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
         <div class="container">
-            @guest
-                <a class="navbar-brand" href="{{ url('/') }}">
-                    {{ config('app.name', 'Laravel') }}
-                </a>
-            @else
-                <a class="navbar-brand" href="{{ url('/home') }}">
-                    {{ config('app.name', 'Laravel') }}
-                </a>
-            @endguest
+            <div>
+                @guest
+                    <a class="navbar-brand" href="{{ url('/') }}">
+                @else
+                    <a class="navbar-brand" href="{{ url('/home') }}">
+                @endguest
+                    <img id="logo" class="img-responsive" src="{{ asset('/images/logo.png') }}">
+                    </a>
+            </div>
 
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
                     aria-controls="navbarSupportedContent" aria-expanded="false"
@@ -48,9 +48,9 @@
                 <!-- Right Side Of Navbar -->
                 <ul class="navbar-nav ml-auto">
                     <!-- Authentication Links -->
-                    @guest
-                    @else
-                        <!-- Need refactor here-->
+                @guest
+                @else
+                    <!-- Need refactor here-->
                         @if(auth()->user()->username == 'manager')
                             <li class="nav-item">
                                 <a class="nav-link" href="{{ route('admin_panel') }}">{{ __('Admin panel') }}</a>
