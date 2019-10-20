@@ -49,10 +49,14 @@
                 <ul class="navbar-nav ml-auto">
                     <!-- Authentication Links -->
                     @guest
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a>
-                        </li>
                     @else
+                        <!-- Need refactor here-->
+                        @if(auth()->user()->username == 'manager')
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ route('admin_panel') }}">{{ __('Admin panel') }}</a>
+                            </li>
+                        @endif
+
                         <li class="nav-item dropdown">
 
                             <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button"
