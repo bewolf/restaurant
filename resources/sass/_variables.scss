@@ -18,9 +18,43 @@ $green: #38c172;
 $teal: #4dc0b5;
 $cyan: #6cb2eb;
 
+/*Header*/
 #logo {
   max-height: 50px;
 }
-#app > nav > div, #app > nav{
-  background-color: #4DC8E9!important;
+
+#app > nav > div, #app > nav {
+  background-color: #4DC8E9 !important;
+
+}
+
+#navbarSupportedContent > ul.navbar-nav.ml-auto > li > a {
+  font-size: 1.2em;
+  font-weight: bold;
+
+}
+
+/***********************************************************************************/
+/*Admin page*/
+#user_panel, #stats_panel, #warehouse_panel {
+  padding: 0;
+
+  > h3 {
+
+    background: #61D4D4;
+  }
+  > a {
+    background: #8AE3D7;
+    -webkit-transition: background 0.2s ease-out;
+    -moz-transition: background 0.2s ease-out;
+    -o-transition: background 0.2s ease-out;
+    transition: background 0.2s ease-in-out;
+
+    &:hover{
+      background: #61D4D4;
+      font-weight: bold;
+
+    }
+
+  }
 }

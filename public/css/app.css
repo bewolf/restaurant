@@ -1,5 +1,7 @@
 @import url(https://fonts.googleapis.com/css?family=Nunito);@charset "UTF-8";
 
+/*Header*/
+
 #logo {
   max-height: 50px;
 }
@@ -7,6 +9,41 @@
 #app > nav > div,
 #app > nav {
   background-color: #4DC8E9 !important;
+}
+
+#navbarSupportedContent > ul.navbar-nav.ml-auto > li > a {
+  font-size: 1.2em;
+  font-weight: bold;
+}
+
+/***********************************************************************************/
+
+/*Admin page*/
+
+#user_panel,
+#stats_panel,
+#warehouse_panel {
+  padding: 0;
+}
+
+#user_panel > h3,
+#stats_panel > h3,
+#warehouse_panel > h3 {
+  background: #61D4D4;
+}
+
+#user_panel > a,
+#stats_panel > a,
+#warehouse_panel > a {
+  background: #8AE3D7;
+  transition: background 0.2s ease-in-out;
+}
+
+#user_panel > a:hover,
+#stats_panel > a:hover,
+#warehouse_panel > a:hover {
+  background: #61D4D4;
+  font-weight: bold;
 }
 
 /*!
