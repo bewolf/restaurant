@@ -30,6 +30,7 @@ Route::group(['middleware' => ['auth', 'manager']], function () {
         return view('admin_panel');
     })->name('admin_panel');
 
+    Route::resource('user', 'UserController');
 });
 
 // All routes that need no authentication

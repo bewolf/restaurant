@@ -18,6 +18,12 @@
 
 /***********************************************************************************/
 
+/*Front page*/
+
+#app > main > div.container > div > div > div > div.card-header {
+  background: #8AE3D7;
+}
+
 /*Admin page*/
 
 #user_panel,
