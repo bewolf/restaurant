@@ -9,3 +9,23 @@ If you discover a security vulnerability within Restaurant, please send an e-mai
 ## License
 
 The Restaurant is open-source software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+
+## Instalation
+
+Open command prompt at program directory and type:
+
+php artisan tinker
+
+$user = new User;
+
+$user->name = 'name';
+
+$user->username = manager;
+
+$user->password = Hash::make('your password');
+
+$user->email = 'email@example.com';
+
+$user->save();
+
+Exit from command prompt and enter with your manager account to start work.
