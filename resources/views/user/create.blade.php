@@ -41,9 +41,9 @@
                            required>
                 </div>
                 <div class="form-group">
-                    <label for="role">Role</label>
+                    <label for="role">Position</label>
                     <select class="form-control" id="role" name="role">
-                        <option disabled selected>Select role</option>
+                        <option disabled selected>Select position</option>
                         <option value="2">Shift Manager</option>
                         <option value="1">Waiter</option>
                     </select>

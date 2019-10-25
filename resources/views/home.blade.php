@@ -1,5 +1,9 @@
 @extends('layouts.app')
 
 @section('content')
-    <h1>Restaurant</h1>
+    <div class="row justify-content-center">
+        <h1>Hello {{auth()->user()->name}}</h1>
+
+
+    </div>
 @endsection
