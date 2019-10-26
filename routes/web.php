@@ -26,6 +26,7 @@ Route::group(['middleware' => 'auth'], function () {
 });
 // Manager routes
 Route::group(['middleware' => ['auth', 'manager']], function () {
+
     Route::get('/admin_panel', function () {
         return view('admin_panel');
     })->name('admin_panel');

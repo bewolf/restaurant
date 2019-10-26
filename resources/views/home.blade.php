@@ -1,9 +1,12 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="row justify-content-center">
-        <h1>Hello {{auth()->user()->name}}</h1>
+    @can('manager')
+        <h1>Manager!</h1>
+    @endcan
 
+    {{--@if(auth()->user()->roles == 'manager')--}}
 
-    </div>
+        {{--@include('admin_panel')--}}
+    {{--@endif--}}
 @endsection

@@ -62,6 +62,10 @@ class User extends Authenticatable
         ]);
 
         return back()->with('success', 'Successful created user');
+    }
 
+    public function roles()
+    {
+        return $this->belongsToMany(Role::class, 'users_roles');
     }
 }
