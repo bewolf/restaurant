@@ -2,7 +2,7 @@
 
 @section('content')
     @can('manager')
-        <h1>Manager!</h1>
+        @include('admin_panel')
     @endcan
 
     {{--@if(auth()->user()->roles == 'manager')--}}
