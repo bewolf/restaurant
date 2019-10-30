@@ -1,12 +1,13 @@
 @extends('layouts.app')
 
 @section('content')
+
     @can('manager')
-        @include('admin_panel')
+        @include('manager.index')
+    @endcan
+    @can('user')
+        <h1>User {{auth()->user()->name}}</h1>
     @endcan
 
-    {{--@if(auth()->user()->roles == 'manager')--}}
 
-        {{--@include('admin_panel')--}}
-    {{--@endif--}}
 @endsection

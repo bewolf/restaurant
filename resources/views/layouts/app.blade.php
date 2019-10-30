@@ -50,12 +50,6 @@
                     <!-- Authentication Links -->
                 @guest
                 @else
-                    <!-- Need refactor here-->
-                        @if(auth()->user()->username == 'manager')
-                            <li class="nav-item">
-                                <a class="nav-link" href="{{ route('admin_panel') }}">{{ __('Admin panel') }}</a>
-                            </li>
-                        @endif
 
                         <li class="nav-item dropdown">
 

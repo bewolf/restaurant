@@ -24,7 +24,7 @@
             @endforeach
             </tbody>
         </table>
-        <a class="btn btn-primary" href="{{route('admin_panel')}}">Back to admin panel</a>
+        <a class="btn btn-primary" href="{{route('home')}}">Back to admin panel</a>
     </div>
     </div>
 @endsection

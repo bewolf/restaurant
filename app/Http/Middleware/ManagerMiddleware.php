@@ -15,8 +15,7 @@ class ManagerMiddleware
      */
     public function handle($request, Closure $next)
     {
-        // Need refactor for manager role
-        if (auth()->user()->username == 'manager') {
+        if (auth()->user()->roles->pluck('name')->contains('manager')) {
             return $next($request);
         }
         return back()->with('error', 'Unauthorised');
