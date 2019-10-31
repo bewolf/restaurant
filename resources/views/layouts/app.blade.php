@@ -26,11 +26,11 @@
             <div>
                 @guest
                     <a class="navbar-brand" href="{{ url('/') }}">
-                @else
-                    <a class="navbar-brand" href="{{ url('/home') }}">
-                @endguest
-                    <img id="logo" class="img-responsive" src="{{ asset('/images/logo.png') }}">
-                    </a>
+                        @else
+                            <a class="navbar-brand" href="{{ url('/home') }}">
+                                @endguest
+                                <img id="logo" class="img-responsive" src="{{ asset('/images/logo.png') }}">
+                            </a>
             </div>
 
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
@@ -41,16 +41,20 @@
 
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <!-- Left Side Of Navbar -->
-                <ul class="navbar-nav mr-auto">
 
+                <ul class="navbar-nav mr-auto">
+                    @guest
+                    @else
+                        @yield('nav')
+                    @endguest
                 </ul>
 
                 <!-- Right Side Of Navbar -->
                 <ul class="navbar-nav ml-auto">
                     <!-- Authentication Links -->
-                @guest
-                @else
-
+                    @guest
+                    @else
+                        @yield('')
                         <li class="nav-item dropdown">
 
                             <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button"

@@ -11,21 +11,23 @@ If you discover a security vulnerability within Restaurant, please send an e-mai
 The Restaurant is open-source software licensed under the [MIT license](https://opensource.org/licenses/MIT).
 
 ## Instalation
+1. In file Illuminate\Foundation\Auth\AuthenticatesUsers
+    > function username replace from return 'email' to return 'username'
 
 Open command prompt at program directory and type:
 
-php artisan tinker
+> php artisan tinker
 
-$user = new User;
+> $user = new User;
 
-$user->name = 'name';
+> $user->name = 'name';
 
-$user->username = manager;
+> $user->username = manager;
 
-$user->password = Hash::make('your password');
+> $user->password = Hash::make('your password');
 
-$user->email = 'email@example.com';
+> $user->email = 'email@example.com';
 
-$user->save();
+> $user->save();
 
 Exit from command prompt and enter with your manager account to start work.

@@ -26,6 +26,8 @@ Route::group(['middleware' => ['auth', 'manager']], function () {
 
     Route::resource('user', 'UserController');
 
+    Route::resource('invoice', 'InvoiceController');
+
     Route::resource('product', 'ProductController');
 });
 
