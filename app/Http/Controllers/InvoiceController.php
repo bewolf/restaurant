@@ -28,7 +28,7 @@ class InvoiceController extends Controller
      */
     public function store(Request $request)
     {
-        dd('here');
+        dd($request);
     }
 
     /**
