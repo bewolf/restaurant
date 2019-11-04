@@ -6,6 +6,7 @@ use Closure;
 
 class ManagerMiddleware
 {
+
     /**
      * Handle an incoming request.
      *

@@ -20,11 +20,13 @@ Auth::routes(['register' => false]);
 Route::group(['middleware' => 'auth'], function () {
 
     Route::get('/home', 'HomeController@index')->name('home');
+
+    Route::resource('user', 'UserController');
+
 });
 // Manager routes
 Route::group(['middleware' => ['auth', 'manager']], function () {
 
-    Route::resource('user', 'UserController');
 
     Route::resource('invoice', 'InvoiceController');
 

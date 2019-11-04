@@ -7,6 +7,14 @@ use Illuminate\Http\Request;
 
 class UserController extends Controller
 {
+
+    public function __construct()
+    {
+        $this->middleware(['auth', 'manager'], ['only' => ['index', 'create', 'destroy']]);
+
+    }
+
+
     /**
      * Display a listing of the resource.
      *
@@ -70,7 +78,14 @@ class UserController extends Controller
      */
     public function update(Request $request, User $user)
     {
-        //
+        $attributes = $request->validate([
+            'name' => 'required|min:3',
+            'email' => 'required',
+
+        ]);
+        $user->update($attributes);
+
+        return back()->with('success', 'Successful updated user');
     }
 
     /**

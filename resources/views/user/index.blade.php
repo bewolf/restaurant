@@ -9,6 +9,7 @@
             <tr>
                 <th>Name</th>
                 <th>Username</th>
+                <th>Position</th>
                 <th>Email</th>
                 <th></th>
             </tr>
@@ -18,8 +19,9 @@
                 <tr>
                     <td>{{ $user->name }}</td>
                     <td>{{ $user->username }}</td>
+                    <td>{{ $user->roles->pluck('name')[0] }}</td>
                     <td>{{ $user->email }}</td>
-                    <td><a class="btn btn-secondary" href="{{route('user.edit', [$user->id])}}">Edit</a></td>
+                    <td><a class="btn btn-secondary" href="{{route('user.edit', [$user->id])}}">Change position</a></td>
                 </tr>
             @endforeach
             </tbody>
