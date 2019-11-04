@@ -22,16 +22,25 @@
                            placeholder="Invoice number"
                            required>
                 </div>
-
+                <div class="form-group col-md-4 float-left pl-0 pr-0 pb-0">
+                    <label for="name">Product name</label>
+                </div>
+                <div class="form-group col-md-2 float-left pl-0 pr-0">
+                    <label for="name">Unit</label>
+                </div>
+                <div class="form-group col-md-2 float-left pl-0 pr-0">
+                    <label for="name">Quantity</label>
+                </div>
+                <div class="form-group col-md-2 float-left pl-0 pr-0">
+                    <label for="name">Price</label>
+                </div>
                 <div class="col-md-12 d-inline-bloc pl-0" id="row">
                     <div class="form-group col-md-4 float-left pl-0 pr-0">
-                        <label for="name">Product name</label>
                         <input type="text" id="name" name="name[]" class="form-control" placeholder="Product name"
                                required>
                     </div>
 
                     <div class="col-md-2 float-left pl-0 pr-0">
-                        <label for="unit">Unit</label>
                         <select class="form-control" id="unit" name="unit[]">
                             <option disabled selected>Select unit</option>
                             <option value="kg">kg</option>
@@ -42,17 +51,15 @@
                         </select>
                     </div>
                     <div class="col-md-2 float-left pl-0 pr-0">
-                        <label for="quantity">Quantity</label>
                         <input type="text" id="quantity" name="quantity[]" class="form-control"
                                placeholder="Quantity"
                                required>
                     </div>
                     <div class="form-group col-md-2 float-left pl-0 pr-0">
-                        <label for="price">Price</label>
                         <input type="text" id="price" name="price[]" class="form-control" placeholder="Price"
                                required>
                     </div>
-                    <div class="form-group col-md-1 float-left pr-0 mt-4 pt-2 ">
+                    <div class="form-group col-md-1 float-left pr-0 mt-1 ">
                         <button type="button" class="btn" id="add" name="add">
                             <i class="fas fa-plus"></i>
                         </button>
@@ -96,7 +103,7 @@
             $("#row > div:nth-child(5)")
                 .remove();
             $("#row")
-                .append('<div class="form-group col-md-1 float-left pr-0  pt-2  mt-4"><button type="button" class="btn" id="remove" name="add"><i class="fas fa-minus"></i></button></div>');
+                .append('<div class="form-group col-md-1 float-left pr-0 mt-1"><button type="button" class="btn" id="remove" name="add"><i class="fas fa-minus"></i></button></div>');
 
             $("#row" + (i - 1) + "> div:nth-child(5)")
                 .remove();
