@@ -4,16 +4,17 @@ namespace App\Http\Controllers;
 
 use App\Models\Invoice;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 
 class InvoiceController extends Controller
 {
     public function index()
     {
         $invoices = Invoice::
-            select('number', 'created_at')
+        select('number', 'created_at')
             ->groupBy('number', 'created_at')
-            ->get();
+            ->orderBy('created_at', 'desc')
+            ->paginate(9);
+
         return view('invoice.index', compact('invoices'));
     }
 
@@ -35,27 +36,47 @@ class InvoiceController extends Controller
      */
     public function store(Request $request)
     {
-        dd($request);
+        for ($i = 0; $i < count($request->product_name); $i++) {
+            $data[] = [
+                'number' => $request->number,
+                'product_name' => $request->product_name[$i],
+                'quantity' => $request->quantity[$i],
+                'unit' => $request->unit[$i],
+                'unit_price' => $request->unit_price[$i],
+                'added_by' => auth()->id(),
+                'created_at' => now(),
+                'updated_at' => now(),
+            ];
+        }
+        if (Invoice::where('number', $request->number)->exists()) {
+            return back()->with('error', 'Duplicate Invoice number')->withInput();
+        }
+        Invoice::insert($data);
+        return back()->with('success', 'Successful added invoice');
+
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Warehouse $warehouse
+     * @param  \App\Models\Invoice
      * @return \Illuminate\Http\Response
      */
-    public function show(Product $warehouse)
+    public function show($number)
     {
-        //
+        $invoiceData = Invoice::where('number', $number)->get();
+
+        return view('invoice.show', compact('invoiceData'));
+
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Warehouse $warehouse
+     * @param  \App\Models\Invoice
      * @return \Illuminate\Http\Response
      */
-    public function edit(Product $warehouse)
+    public function edit(Invoice $invoice)
     {
         //
     }

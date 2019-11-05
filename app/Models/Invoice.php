@@ -9,4 +9,5 @@ class Invoice extends Model
     protected $fillable = [
         'number', 'product_name', 'quantity', 'unit', 'unit_price',
     ];
+
 }
