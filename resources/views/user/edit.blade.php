@@ -8,7 +8,7 @@
                 <strong>{{ $message }}</strong>
             </div>
         @endif
-        <h1 class="col-md-9 text-center">Change profile data</h1>
+        <h1 class="col-md-9 text-center">Change profile data of {{auth()->user()->username}}</h1>
         <div class="col-md-7">
             <form method="post" action="{{route('user.update', ['user' => $user->id ])}}">
                 @csrf

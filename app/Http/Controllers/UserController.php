@@ -66,7 +66,10 @@ class UserController extends Controller
      */
     public function edit(User $user)
     {
-        return view('user.edit', compact('user'));
+        if (auth()->id() == $user->id) {
+            return view('user.edit', compact('user'));
+        }
+        return back();
     }
 
     /**
@@ -80,7 +83,7 @@ class UserController extends Controller
     {
         $attributes = $request->validate([
             'name' => 'required|min:3',
-            'email' => 'required',
+            'email' => 'required|email',
 
         ]);
         $user->update($attributes);
