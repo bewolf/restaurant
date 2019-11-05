@@ -2,12 +2,19 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Invoice;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class InvoiceController extends Controller
 {
     public function index()
     {
+        $invoices = Invoice::
+            select('number', 'created_at')
+            ->groupBy('number', 'created_at')
+            ->get();
+        return view('invoice.index', compact('invoices'));
     }
 
     /**
