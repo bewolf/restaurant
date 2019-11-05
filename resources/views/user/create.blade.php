@@ -54,7 +54,7 @@
                     </div>
                     <button type="submit" class="btn btn-primary">Submit</button>
                 </form>
-                <a class="btn btn-primary mt-2" href="{{route('home')}}">Back to admin panel</a>
+                <a class="btn btn-primary mt-2" href="{{route('home')}}">Back to Home</a>
 
             </div>
         </div>

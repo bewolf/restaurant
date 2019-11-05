@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\Invoice;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Validation\Rules\In;
+use PhpParser\Node\Stmt\Else_;
 
 class InvoiceController extends Controller
 {
@@ -48,9 +51,25 @@ class InvoiceController extends Controller
                 'updated_at' => now(),
             ];
         }
-        if (Invoice::where('number', $request->number)->exists()) {
+        if (Invoice::CheckInvoiceNumberExists($request)) {
             return back()->with('error', 'Duplicate Invoice number')->withInput();
         }
+        for ($i = 0; $i <= count($data); $i++) {
+            dd($data[$i]    );
+            if (DB::table('warehouse')->where('name', $data[$i]->product_name)->exists()) {
+//                DB::table('warehouse')
+//                    ->where('name', $data[$i]->product_name)
+//                    ->update('quantity', 5);
+            } else {
+                DB::table('warehouse')->insert([
+                    'name' => $data[$i]->product_name,
+                    'quantity' => $data[$i]->quantity,
+                    'unit' => $data[$i]->unit,
+                    'updated_at' => now(),
+                ]);
+            }
+        }
+
         Invoice::insert($data);
         return back()->with('success', 'Successful added invoice');
 
@@ -85,10 +104,10 @@ class InvoiceController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request $request
-     * @param  \App\Warehouse $warehouse
+     * *@param  \App\Models\Invoice
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Product $warehouse)
+    public function update(Request $request, Invoice $invoice)
     {
         //
     }
@@ -96,10 +115,10 @@ class InvoiceController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Warehouse $warehouse
+     * @param  \App\Models\Invoice
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Product $warehouse)
+    public function destroy(Invoice $invoice)
     {
         //
     }

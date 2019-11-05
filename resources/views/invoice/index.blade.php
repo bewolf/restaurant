@@ -17,6 +17,6 @@
     </table>
     {{ $invoices->links() }}
 
-    <a class="btn btn-primary mt-2" href="{{route('home')}}">Back to admin panel</a>
+    <a class="btn btn-primary mt-2" href="{{route('home')}}">Back to Home</a>
 
 @endsection

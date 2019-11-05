@@ -67,9 +67,9 @@ class UserController extends Controller
     public function edit(User $user)
     {
         if (auth()->id() == $user->id) {
-            return view('user.edit', compact('user'));
+            return view('user.edit');
         }
-        return back();
+        return redirect()->route('home')->with('error', 'Access Denied: you have not permission to edit other user data');
     }
 
     /**

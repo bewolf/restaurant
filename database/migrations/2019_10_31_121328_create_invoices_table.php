@@ -17,7 +17,7 @@ class CreateInvoicesTable extends Migration
             $table->bigIncrements('id');
             $table->unsignedInteger('number');
             $table->string('product_name');
-            $table->unsignedInteger('quantity');
+            $table->double('quantity');
             $table->set('unit', ['kg', 'grams', 'qty.', 'cm', 'liters']);
             $table->decimal('unit_price');
             $table->unsignedBigInteger('added_by');

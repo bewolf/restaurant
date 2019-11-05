@@ -5,18 +5,8 @@
     <h1 class="col-md-12 text-center">Add invoice</h1>
 
     <div class="col-md-12">
-        @if ($message = Session::get('success'))
-            <div class="alert alert-success alert-block">
-                <button type="button" class="close" data-dismiss="alert">×</button>
-                <strong>{{ $message }}</strong>
-            </div>
-        @endif
-        @if ($message = Session::get('error'))
-            <div class="alert alert-danger alert-block">
-                <button type="button" class="close" data-dismiss="alert">×</button>
-                <strong>{{ $message }}</strong>
-            </div>
-        @endif
+        @include('session_alerts.alerts')
+
         <form method="post" action="{{route('invoice.store')}}">
             @csrf
 
@@ -38,7 +28,7 @@
                     <label for="name">Quantity</label>
                 </div>
                 <div class="form-group col-md-2 float-left pl-0 pr-0">
-                    <label for="name">Price</label>
+                    <label for="name">Price per unit</label>
                 </div>
                 <div class="col-md-12 d-inline-bloc pl-0" id="row">
                     <div class="form-group col-md-4 float-left pl-0 pr-0">
@@ -79,7 +69,7 @@
 
         </form>
 
-        <a class="btn btn-primary mt-2" href="{{route('home')}}">Back to admin panel</a>
+        <a class="btn btn-primary mt-2" href="{{route('home')}}">Back to Home</a>
 
     </div>
 

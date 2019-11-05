@@ -1,9 +1,4 @@
 <div class="row justify-content-center">
-    <h1 class="py-4">Admin panel</h1>
-</div>
-
-
-<div class="row justify-content-center">
     <div id="warehouse_panel" class="list-group col-md-3 border float-left mr-2">
         <h3 class="toast-header justify-content-center">Invoices</h3>
         <a href="{{route('invoice.create')}}" class="list-group-item list-group-item-action">Add new invoice</a>
