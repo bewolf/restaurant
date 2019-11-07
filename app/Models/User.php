@@ -42,6 +42,12 @@ class User extends Authenticatable
 
     public static function addUser($data)
     {
+        if (User::where('username', $data->username)->exists() || User::where('username', $data->email)->exists()) {
+            return redirect()
+                ->route('user.create')
+                ->with('error', 'Duplicate username or email.')
+                ->withInput();
+        }
         $attributes = $data->validate([
             'name' => 'required|min:3',
             'username' => 'required|min:3',
@@ -62,7 +68,7 @@ class User extends Authenticatable
             'role_id' => $data->role,
         ]);
 
-        return back()->with('success', 'Successful created user');
+        return redirect()->route('user.create')->with('success', 'Successful created user');
     }
 
     public function roles()

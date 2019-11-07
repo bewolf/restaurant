@@ -36,7 +36,7 @@
 
     <div id="warehouse_panel" class="list-group col-md-3 border float-left ml-2 mt-4">
         <h3 class="toast-header justify-content-center">Warehouse</h3>
-        <a href="{{route('product.index')}}" class="list-group-item list-group-item-action">Availability</a>
+        <a href="{{route('products.index')}}" class="list-group-item list-group-item-action">Availability</a>
     </div>
 
 </div>

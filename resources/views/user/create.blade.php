@@ -9,28 +9,24 @@
             <h1 class="col-md-12 text-center">Hire worker</h1>
 
             <div class="col-md-6">
-                @if ($message = Session::get('success'))
-                    <div class="alert alert-success alert-block">
-                        <button type="button" class="close" data-dismiss="alert">×</button>
-                        <strong>{{ $message }}</strong>
-                    </div>
-                @endif
+                @include('session_alerts.alerts')
+
                 <form method="post" action="{{route('user.store')}}">
                     @csrf
-
                     <div class="form-group">
                         <label for="name">Name</label>
-                        <input type="text" id="name" name="name" class="form-control" placeholder="Name" required>
+                        <input type="text" id="name" name="name" class="form-control" placeholder="Name" required
+                               value="{{old('name')}}">
                     </div>
                     <div class="form-group">
                         <label for="username">Username</label>
                         <input type="text" id="username" class="form-control" name="username" placeholder="Username"
-                               required>
+                               required value="{{old('username')}}">
                     </div>
                     <div class="form-group">
                         <label for="email">Email address</label>
                         <input type="email" class="form-control" name="email" id="email" placeholder="name@example.com"
-                               required>
+                               required value="{{old('email')}}">
                     </div>
                     <div class="form-group">
                         <label for="password">Password</label>
@@ -48,8 +44,8 @@
                         <label for="role">Position</label>
                         <select class="form-control" id="role" name="role">
                             <option disabled selected>Select position</option>
-                            <option value="2">Shift Manager</option>
-                            <option value="1">Waiter</option>
+                            <option value="2" {{old('role') == 2 ? 'selected' : ''}}>Shift Manager</option>
+                            <option value="1" {{old('role') == 1 ? 'selected' : ''}}>Waiter</option>
                         </select>
                     </div>
                     <button type="submit" class="btn btn-primary">Submit</button>
