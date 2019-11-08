@@ -42,20 +42,9 @@ class User extends Authenticatable
 
     public static function addUser($data)
     {
-        if (User::where('username', $data->username)->exists() || User::where('username', $data->email)->exists()) {
-            return redirect()
-                ->route('user.create')
-                ->with('error', 'Duplicate username or email.')
-                ->withInput();
-        }
-        $attributes = $data->validate([
-            'name' => 'required|min:3',
-            'username' => 'required|min:3',
-            'email' => 'required',
-            'role' => 'required',
-            'password' => 'required|confirmed',
 
-        ]);
+        $attributes = $data->validated();
+
         $user = User::create([
             'name' => $attributes['name'],
             'username' => $attributes['username'],

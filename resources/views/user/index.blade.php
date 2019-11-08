@@ -15,26 +15,21 @@
                 </tr>
                 </thead>
                 <tbody>
-                @foreach($users as  $user)
+                @foreach($users as $user)
                     <tr>
                         <td>{{ $user->name }}</td>
                         <td>{{ $user->username }}</td>
-                        <td>{{ $user->roles->pluck('name')[0] }}</td>
+                        <td>{{ $user->roles->pluck('name')->first() }}</td>
                         <td>{{ $user->email }}</td>
                         <td>
-                            <select class="form-control" name="position" id="">
-                                <option value="1" {{ $user->roles->pluck('name')[0]=="user" ? "selected" : ""}}>
-                                    User
-                                </option>
-                                <option value="2" {{ $user->roles->pluck('name')[0]=="shift_manager" ? "selected" : ""}}>
-                                    Shift Manager
-                                </option>
-                                <option value="3" {{ $user->roles->pluck('name')[0]=="manager" ? "selected" : ""}}>
-                                    Manager
-                                </option>
+                            <select class="form-control" name="position">
+                                @foreach($roles as $key => $role)
+                                    <option value="{{$key + 1}}" {{ $role ==$user->roles->pluck('name')->first() ? "selected" : ""}}>{{$role}}</option>
+                                @endforeach
                             </select>
                         </td>
                     </tr>
+
                 @endforeach
                 </tbody>
             </table>

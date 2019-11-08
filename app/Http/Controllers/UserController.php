@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Role;
 use App\Models\User;
-use Illuminate\Http\Request;
+use App\Http\Requests\UserUpdateRequest;
+use App\Http\Requests\UserStoreRequest;
 
 class UserController extends Controller
 {
@@ -24,7 +26,8 @@ class UserController extends Controller
     public function index()
     {
         $users = User::get();
-        return view('user.index', compact('users'));
+        $roles = Role::pluck('name');
+        return view('user.index', compact(['users', 'roles']));
     }
 
     /**
@@ -34,7 +37,9 @@ class UserController extends Controller
      */
     public function create()
     {
-        return view('user.create');
+        $roles = Role::pluck('name');
+
+        return view('user.create', compact('roles'));
     }
 
     /**
@@ -43,7 +48,7 @@ class UserController extends Controller
      * @param  \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(UserStoreRequest $request)
     {
         return User::addUser($request);
     }
@@ -66,10 +71,10 @@ class UserController extends Controller
      */
     public function edit(User $user)
     {
-        if (auth()->id() == $user->id) {
+        if (self::checkUser($user)) {
             return view('user.edit');
         }
-        return redirect()->route('home')->with('error', 'Access Denied: you have not permission to edit other user data');
+        return redirect()->route('home')->with('error', 'Access Denied: you have not permission to view/edit other user data');
     }
 
     /**
@@ -79,16 +84,13 @@ class UserController extends Controller
      * @param  \App\Models\User $user
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, User $user)
+    public function update(UserUpdateRequest $request, User $user)
     {
-        $attributes = $request->validate([
-            'name' => 'required|min:3',
-            'email' => 'required|email',
+        $attributes = $request->validated();
 
-        ]);
         $user->update($attributes);
 
-        return back()->with('success', 'Successful updated user');
+        return redirect()->route('user.edit', $user)->with('success', 'Successful updated user');
     }
 
     /**
@@ -97,8 +99,13 @@ class UserController extends Controller
      * @param  \App\User $user
      * @return \Illuminate\Http\Response
      */
-    public function destroy(User $user)
+    public function destroy()
     {
-        //
+        return view('user.destroy');
+    }
+
+    private function checkUser($user)
+    {
+        return auth()->id() == $user->id;
     }
 }

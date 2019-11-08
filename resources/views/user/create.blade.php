@@ -10,7 +10,6 @@
 
             <div class="col-md-6">
                 @include('session_alerts.alerts')
-
                 <form method="post" action="{{route('user.store')}}">
                     @csrf
                     <div class="form-group">
@@ -44,9 +43,12 @@
                         <label for="role">Position</label>
                         <select class="form-control" id="role" name="role">
                             <option disabled selected>Select position</option>
-                            <option value="2" {{old('role') == 2 ? 'selected' : ''}}>Shift Manager</option>
-                            <option value="1" {{old('role') == 1 ? 'selected' : ''}}>Waiter</option>
+                            @foreach($roles as $key => $role)
+
+                                <option value="{{$key + 1}}">{{$role}}</option>
+                            @endforeach
                         </select>
+
                     </div>
                     <button type="submit" class="btn btn-primary">Submit</button>
                 </form>
