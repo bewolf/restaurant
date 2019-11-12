@@ -12,8 +12,7 @@ class UserController extends Controller
 
     public function __construct()
     {
-        $this->middleware(['auth', 'manager'], ['only' => ['index', 'create', 'destroy']]);
-
+        $this->middleware(['manager'], ['only' => ['index', 'create', 'destroy', 'fired.users']]);
     }
 
 
@@ -25,7 +24,7 @@ class UserController extends Controller
      */
     public function index()
     {
-        $users = User::get();
+        $users = User::paginate(10);;
         $roles = Role::pluck('name');
         return view('user.index', compact(['users', 'roles']));
     }
@@ -50,7 +49,7 @@ class UserController extends Controller
      */
     public function store(UserStoreRequest $request)
     {
-        return User::addUser($request);
+        return User::addUser($request->all());
     }
 
     /**
@@ -69,12 +68,9 @@ class UserController extends Controller
      * @param  \App\User $user
      * @return \Illuminate\Http\Response
      */
-    public function edit(User $user)
+    public function edit()
     {
-        if (self::checkUser($user)) {
-            return view('user.edit');
-        }
-        return redirect()->route('home')->with('error', 'Access Denied: you have not permission to view/edit other user data');
+        return view('user.edit');
     }
 
     /**
@@ -86,9 +82,8 @@ class UserController extends Controller
      */
     public function update(UserUpdateRequest $request, User $user)
     {
-        $attributes = $request->validated();
-
-        $user->update($attributes);
+        dd($request->all());
+        $user->update($request->all());
 
         return redirect()->route('user.edit', $user)->with('success', 'Successful updated user');
     }
@@ -99,13 +94,18 @@ class UserController extends Controller
      * @param  \App\User $user
      * @return \Illuminate\Http\Response
      */
-    public function destroy()
+    public function destroy($id)
     {
-        return view('user.destroy');
+        User::destroy($id);
+
+        return redirect()->route('user.index')->with('success', 'Successful fire worker');
     }
 
-    private function checkUser($user)
-    {
-        return auth()->id() == $user->id;
+    public function exUsers(){
+
+        $users = User::onlyTrashed()->paginate(10);
+
+        return view('user.deleted', compact('users'));
+
     }
 }

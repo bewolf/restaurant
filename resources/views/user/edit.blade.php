@@ -38,7 +38,7 @@
                 <button type="submit" class="btn btn-primary">Submit</button>
             </form>
             <div class="btn-block py-4 ">
-                <a class="btn btn-primary" href="{{route('user.index')}}">Back to workers</a>
+                <a class="btn btn-primary" href="{{route('home')}}">Back to Home</a>
             </div>
         </div>
     </div>

@@ -3,37 +3,90 @@
 @section('content')
     <div class="row justify-content-center">
         <h1 class="col-md-6 text-center">Workers</h1>
-        <div class="col-md-9 py-3">
-            <table id="dtBasicExample" class="table table-striped table-bordered table-sm" cellspacing="0" width="100%">
-                <thead class="thead-dark">
-                <tr>
-                    <th>Name</th>
-                    <th>Username</th>
-                    <th>Position</th>
-                    <th>Email</th>
-                    <th>Change position</th>
-                </tr>
-                </thead>
-                <tbody>
+        @include('session_alerts.alerts')
+        <div class="col-md-12 py-3">
+            <div id="users" class="py-2">
+                <div class="row py-2 text-center sticky-top">
+                    <div class="col-md-2">Name</div>
+                    <div class="col-md-2">Username</div>
+                    <div class="col-md-2">Email</div>
+                    <div class="col-md-2">Permissions</div>
+                    <div class="col-md-2">Change permissions</div>
+                    <div class="col-md-2">Worker Action</div>
+                </div>
                 @foreach($users as $user)
-                    <tr>
-                        <td>{{ $user->name }}</td>
-                        <td>{{ $user->username }}</td>
-                        <td>{{ $user->roles->pluck('name')->first() }}</td>
-                        <td>{{ $user->email }}</td>
-                        <td>
-                            <select class="form-control" name="position">
-                                @foreach($roles as $key => $role)
-                                    <option value="{{$key + 1}}" {{ $role ==$user->roles->pluck('name')->first() ? "selected" : ""}}>{{$role}}</option>
-                                @endforeach
-                            </select>
-                        </td>
-                    </tr>
+                    <div class="row pt-2 border border-top-0 border-left-0 border-right-0 border-info text-center">
+                        <div class="col-md-2">{{ $user->name }}</div>
+                        <div class="col-md-2 username">{{ $user->username }}</div>
+                        <div class="col-md-2">{{ $user->email }}</div>
+                        <div class="col-md-2">
+                            {{implode(' | ', $user->roles->pluck('name')->toArray() )}}
+                        </div>
+                        <div class="col-md-2 text-center">
+                            <a href="#" class="btn btn-info permissionsChange" id="{{$user->username}}">Change</a>
+                        </div>
+                        <div class="col-md-2 text-center">
+
+                            <form method="post" action="{{route('user.destroy', $user->id)}}">
+                                @method('DELETE')
+                                @csrf
+                                <input class="btn btn-danger" type="submit" value="Fire" onclick="return confirm('Are you sure?')">
+
+                            </form>
+                        </div>
+                    </div>
 
                 @endforeach
-                </tbody>
-            </table>
+                {{ $users->links() }}
+
+            </div>
             <a class="btn btn-primary" href="{{route('home')}}">Back to Home</a>
+            <a class="btn btn-secondary" href="{{route('ex.users')}}">Ex workers</a>
         </div>
     </div>
 @endsection
+
+<script
+        src="https://code.jquery.com/jquery-3.4.1.min.js"
+        integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+        crossorigin="anonymous">
+
+</script>
+<script>
+    $(document).ready(function () {
+        let counter = 0;
+
+        $('#users').on('click', '.permissionsChange', function () {
+
+            let permissionForm = $(this).parents(':eq(1)');
+            if ($('#permissionsForm' + counter).exist){
+                $(this).parents(':eq(1)').remove();
+            }
+            $(permissionForm).append(
+                '<div class="col-md-6 text-left" id="permissionsForm'+ counter +'">' +
+                    '<form method="post" action="{{route('user.update',  ['user' => $user->id])}}">' +
+                        '@csrf' +
+                        '@method("patch")' +
+                        ' <div class="form-group">' +
+                            '<p>Permissions</p>' +
+                            '@foreach($roles as $key => $role)' +
+                                '<div class="form-control">' +
+                                    '<input type="checkbox" value="{{$key + 1}}" name="roles[]" id="{{$role}}' + counter + '" >' +
+                                    '<label class="pl-2" for="{{$role}}'+counter+'">{{$role}}</label>' +
+                                '</div>' +
+                            '@endforeach' +
+                        '</div>' +
+                        '<button type="submit" class="btn btn-primary"> Submit </button>' +
+                        '<button type="submit" class="close"> Close </button>' +
+                    '</form>' +
+                '</div>');
+            counter++;
+        });
+
+        $(document).on("click", "button.close" , function() {
+            $(this).parents(':eq(1)').remove();
+        });
+    });
+
+
+</script>

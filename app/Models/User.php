@@ -42,21 +42,17 @@ class User extends Authenticatable
 
     public static function addUser($data)
     {
+        $data['password'] = Hash::make($data['password']);
 
-        $attributes = $data->validated();
+        $user = User::create($data);
 
-        $user = User::create([
-            'name' => $attributes['name'],
-            'username' => $attributes['username'],
-            'email' => $attributes['email'],
-            'password' => Hash::make($attributes['password']),
-        ]);
-
-        UsersRoles::insert([
-            'user_id' => $user->id,
-            'role_id' => $data->role,
-        ]);
-
+        $roles = $data['role'];
+        for ($i = 0; $i < count($roles); $i++) {
+            UsersRoles::insert([
+                'user_id' => $user->id,
+                'role_id' => $roles[$i],
+            ]);
+        }
         return redirect()->route('user.create')->with('success', 'Successful created user');
     }
 

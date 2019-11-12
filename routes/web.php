@@ -21,16 +21,17 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::get('/home', 'HomeController@index')->name('home');
 
+    Route::get('ex.users', 'UserController@exUsers')->name('ex.users');
+
     Route::resource('user', 'UserController');
 
 });
 // Manager routes
 Route::group(['middleware' => ['auth', 'manager']], function () {
 
-
     Route::resource('invoice', 'InvoiceController');
 
-    Route::resource('product', 'ProductController');
+    Route::resource('products', 'ProductController');
 });
 
 // All routes that need no authentication
