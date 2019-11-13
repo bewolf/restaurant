@@ -21,7 +21,9 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::get('/home', 'HomeController@index')->name('home');
 
-    Route::get('ex.users', 'UserController@exUsers')->name('ex.users');
+    Route::patch('/update-roles', 'UserController@updateRoles')->name('update-roles');
+
+    Route::get('/ex-workers', 'UserController@exWorkers')->name('ex-workers');
 
     Route::resource('user', 'UserController');
 

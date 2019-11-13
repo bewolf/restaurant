@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\RolesUpdateRequest;
 use App\Models\Role;
 use App\Models\User;
 use App\Http\Requests\UserUpdateRequest;
 use App\Http\Requests\UserStoreRequest;
+use App\Models\UsersRoles;
 
 class UserController extends Controller
 {
@@ -101,11 +103,27 @@ class UserController extends Controller
         return redirect()->route('user.index')->with('success', 'Successful fire worker');
     }
 
-    public function exUsers(){
-
+    public function exWorkers()
+    {
         $users = User::onlyTrashed()->paginate(10);
 
         return view('user.deleted', compact('users'));
 
+    }
+
+    public function updateRoles(RolesUpdateRequest $request)
+    {
+        $user = User::find($request->user);
+        $roles = $request->roles;
+        UsersRoles::where('user_id', $request->user)->delete();
+
+        for ($i = 0; $i < count($roles); $i++) {
+            UsersRoles::insert([
+                'user_id' => $user->id,
+                'role_id' => $roles[$i],
+            ]);
+        }
+
+        return redirect()->route('user.index')->with('success', 'Successful update worker permission');
     }
 }

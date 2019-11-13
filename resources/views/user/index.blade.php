@@ -1,9 +1,9 @@
 @extends('layouts.app')
 
 @section('content')
+    @include('session_alerts.alerts')
     <div class="row justify-content-center">
         <h1 class="col-md-6 text-center">Workers</h1>
-        @include('session_alerts.alerts')
         <div class="col-md-12 py-3">
             <div id="users" class="py-2">
                 <div class="row py-2 text-center sticky-top">
@@ -23,15 +23,16 @@
                             {{implode(' | ', $user->roles->pluck('name')->toArray() )}}
                         </div>
                         <div class="col-md-2 text-center">
-                            <a href="#" class="btn btn-info permissionsChange" id="{{$user->username}}">Change</a>
+                            <a href="#" class="btn btn-info permissionsChange" id="{{$user->id}}"
+                               onclick="rolesChanger( {{$user->roles->pluck('name')}},{{ $user->id}} )">Change</a>
                         </div>
                         <div class="col-md-2 text-center">
 
-                            <form method="post" action="{{route('user.destroy', $user->id)}}">
-                                @method('DELETE')
+                            <form method="post" action="{{route('user.destroy', $user)}}">
+                                @method('delete')
                                 @csrf
-                                <input class="btn btn-danger" type="submit" value="Fire" onclick="return confirm('Are you sure?')">
-
+                                <input class="btn btn-danger" type="submit" value="Fire"
+                                       onclick="return confirm('Are you sure?')">
                             </form>
                         </div>
                     </div>
@@ -41,7 +42,7 @@
 
             </div>
             <a class="btn btn-primary" href="{{route('home')}}">Back to Home</a>
-            <a class="btn btn-secondary" href="{{route('ex.users')}}">Ex workers</a>
+            <a class="btn btn-secondary" href="{{route('ex-workers')}}">Ex workers</a>
         </div>
     </div>
 @endsection
@@ -53,40 +54,35 @@
 
 </script>
 <script>
-    $(document).ready(function () {
-        let counter = 0;
+    function rolesChanger(currentRoles, id) {
 
-        $('#users').on('click', '.permissionsChange', function () {
+        console.log(currentRoles);
 
-            let permissionForm = $(this).parents(':eq(1)');
-            if ($('#permissionsForm' + counter).exist){
-                $(this).parents(':eq(1)').remove();
-            }
-            $(permissionForm).append(
-                '<div class="col-md-6 text-left" id="permissionsForm'+ counter +'">' +
-                    '<form method="post" action="{{route('user.update',  ['user' => $user->id])}}">' +
-                        '@csrf' +
-                        '@method("patch")' +
-                        ' <div class="form-group">' +
-                            '<p>Permissions</p>' +
-                            '@foreach($roles as $key => $role)' +
-                                '<div class="form-control">' +
-                                    '<input type="checkbox" value="{{$key + 1}}" name="roles[]" id="{{$role}}' + counter + '" >' +
-                                    '<label class="pl-2" for="{{$role}}'+counter+'">{{$role}}</label>' +
-                                '</div>' +
-                            '@endforeach' +
+        if ($("#permissionsForm").length > 0) {
+            $('#permissionsForm').remove();
+        }
+        $("#" + id).parents(':eq(1)').append(
+            '<div class="col-md-6 text-left" id="permissionsForm">' +
+                '<form method="post" action="{{route('update-roles',  ['user' => $user->id])}}">' +
+                    '@csrf' +
+                    '@method("patch")' +
+                    ' <div class="form-group">' +
+                        '<p>Permissions</p>' +
+                        '@foreach($roles as $key => $role)' +
+                        '<div class="form-control">' +
+                            '<input type="checkbox" value="{{$key + 1}}" name="roles[]" id="{{$role}}">' +
+                            '<label class="pl-2" for="{{$role}}">{{$role}}</label>' +
                         '</div>' +
-                        '<button type="submit" class="btn btn-primary"> Submit </button>' +
-                        '<button type="submit" class="close"> Close </button>' +
-                    '</form>' +
-                '</div>');
-            counter++;
-        });
+                        '@endforeach' +
+                    '</div>' +
+                    '<button type="submit" class="btn btn-primary"> Submit </button>' +
+                    '<button type="submit" class="close"> Close </button>' +
+                '</form>' +
+            '</div>');
 
-        $(document).on("click", "button.close" , function() {
+        $(document).on("click", "button.close", function () {
             $(this).parents(':eq(1)').remove();
         });
-    });
-
+    }
 
 </script>

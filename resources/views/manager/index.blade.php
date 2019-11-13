@@ -28,7 +28,7 @@
     </div>
 
     <div id="user_panel" class="list-group col-md-3 border float-left ml-2 mt-4">
-        <h3 class="toast-header justify-content-center">Workers actions</h3>
+        <h3 class="toast-header justify-content-center">Staff actions</h3>
         <a href="{{route('user.index')}}" class="list-group-item list-group-item-action">Workers</a>
         <a href="{{route('user.create')}}" class="list-group-item list-group-item-action">Hire worker</a>
         <a href="#" class="list-group-item list-group-item-action">Worker stats</a>
