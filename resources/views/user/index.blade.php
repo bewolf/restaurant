@@ -23,8 +23,8 @@
                             {{implode(' | ', $user->roles->pluck('name')->toArray() )}}
                         </div>
                         <div class="col-md-2 text-center">
-                            <a href="#" class="btn btn-info permissionsChange" id="{{$user->id}}"
-                               onclick="rolesChanger( {{$user->roles->pluck('name')}},{{ $user->id}} )">Change</a>
+                            <a href="#" class="btn btn-info permissionsChange"
+                               onclick="showRolesForm({{ $user->id }})">Change</a>
                         </div>
                         <div class="col-md-2 text-center">
 
@@ -35,6 +35,24 @@
                                        onclick="return confirm('Are you sure?')">
                             </form>
                         </div>
+                    </div>
+                    <div class="col-md-6 text-left" id="{{$user->id}}" style="display: none">
+                        <form method="post" action="{{route('update-roles',  ['user' => $user->id])}}">
+                            @csrf
+                            @method("patch")
+                            <div class="form-group">
+                                    <p>Permissions</p>
+                                    @foreach($roles as $role)
+                                    <div class="form-control">
+                                        <input type="checkbox" value="{{ $role->id }}" name="roles[]" id="{{ $role->name }}" @if(in_array($role->name, $user->roles->pluck("name")->toArray())) checked @endif>
+                                        <label class="pl-2" for="{{ $role->name }}">{{ $role->name }}</label>
+                                    </div>
+                                    @endforeach
+                            </div>
+                            <button type="submit" class="btn btn-primary"> Submit </button>
+                            <span class=" btn close" onclick="hideRolesForm({{ $user->id }})"> Close </span>
+                
+                        </form>
                     </div>
 
                 @endforeach
@@ -47,42 +65,13 @@
     </div>
 @endsection
 
-<script
-        src="https://code.jquery.com/jquery-3.4.1.min.js"
-        integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
-        crossorigin="anonymous">
 
-</script>
 <script>
-    function rolesChanger(currentRoles, id) {
-
-        console.log(currentRoles);
-
-        if ($("#permissionsForm").length > 0) {
-            $('#permissionsForm').remove();
-        }
-        $("#" + id).parents(':eq(1)').append(
-            '<div class="col-md-6 text-left" id="permissionsForm">' +
-                '<form method="post" action="{{route('update-roles',  ['user' => $user->id])}}">' +
-                    '@csrf' +
-                    '@method("patch")' +
-                    ' <div class="form-group">' +
-                        '<p>Permissions</p>' +
-                        '@foreach($roles as $key => $role)' +
-                        '<div class="form-control">' +
-                            '<input type="checkbox" value="{{$key + 1}}" name="roles[]" id="{{$role}}">' +
-                            '<label class="pl-2" for="{{$role}}">{{$role}}</label>' +
-                        '</div>' +
-                        '@endforeach' +
-                    '</div>' +
-                    '<button type="submit" class="btn btn-primary"> Submit </button>' +
-                    '<button type="submit" class="close"> Close </button>' +
-                '</form>' +
-            '</div>');
-
-        $(document).on("click", "button.close", function () {
-            $(this).parents(':eq(1)').remove();
-        });
+    function showRolesForm(id) {
+        document.getElementById(id).style.display = 'block';
     }
 
+    function hideRolesForm(id) {
+        document.getElementById(id).style.display = 'none';
+    }
 </script>

@@ -11,7 +11,6 @@ use App\Models\UsersRoles;
 
 class UserController extends Controller
 {
-
     public function __construct()
     {
         $this->middleware(['manager'], ['only' => ['index', 'create', 'destroy', 'fired.users']]);
@@ -26,8 +25,9 @@ class UserController extends Controller
      */
     public function index()
     {
-        $users = User::paginate(10);;
-        $roles = Role::pluck('name');
+        $users = User::paginate(10);
+
+        $roles = Role::all();
         return view('user.index', compact(['users', 'roles']));
     }
 
@@ -108,7 +108,6 @@ class UserController extends Controller
         $users = User::onlyTrashed()->paginate(10);
 
         return view('user.deleted', compact('users'));
-
     }
 
     public function updateRoles(RolesUpdateRequest $request)
