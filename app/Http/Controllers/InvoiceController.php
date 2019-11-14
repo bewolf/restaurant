@@ -6,9 +6,6 @@ use App\Http\Requests\InvoiceStoreRequest;
 use App\Models\Invoice;
 use App\Models\Product;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Validation\Rules\In;
-use PhpParser\Node\Stmt\Else_;
 
 class InvoiceController extends Controller
 {
@@ -16,7 +13,7 @@ class InvoiceController extends Controller
     public function __construct()
     {
 
-        $this->middleware(['shift_manager'], ['only' => ['index', 'create', 'update']]);
+        $this->middleware(['can:shift_manager'], ['only' => ['index', 'create', 'update']]);
     }
 
     public function index()
