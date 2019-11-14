@@ -46,7 +46,5 @@ class AuthServiceProvider extends ServiceProvider
         Gate::define('cook', function ($user) {
             return in_array('cook', $user->roles->pluck('name')->toArray());
         });
-
-
     }
 }

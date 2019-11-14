@@ -11,7 +11,7 @@ class ProductController extends Controller
     public function __construct()
     {
 
-        $this->middleware(['can:shift_manager'], ['only' => 'index']);
+        $this->middleware('can:shift_manager', ['only' => 'index']);
     }
     /**
      * Display a listing of the resource.

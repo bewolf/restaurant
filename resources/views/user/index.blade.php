@@ -36,7 +36,7 @@
                             </form>
                         </div>
                     </div>
-                    <div class="col-md-6 text-left" id="{{$user->id}}" style="display: none">
+                    <div class="col-md-6 text-left roles-form" id="{{$user->id}}" style="display: none">
                         <form method="post" action="{{route('update-roles',  ['user' => $user->id])}}">
                             @csrf
                             @method("patch")
@@ -67,6 +67,11 @@
 
 <script>
     function showRolesForm(id) {
+
+        Array.from(document.getElementsByClassName('roles-form')).forEach((e) => {
+            e.style.display = 'none'
+        });
+
         document.getElementById(id).style.display = 'block';
     }
 

@@ -29,7 +29,7 @@ Route::group(['middleware' => 'auth'], function () {
 
 });
 // Manager routes
-Route::group(['middleware' => ['auth', 'manager']], function () {
+Route::group(['middleware' => ['auth']], function () {
 
     Route::resource('invoice', 'InvoiceController');
 
