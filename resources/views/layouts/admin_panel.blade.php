@@ -1,7 +1,7 @@
 <ul class="navbar-nav navbar-left float-left col-md-2 text-center">
     <div id="warehouse_panel" class="">
         <h3 class="toast-header justify-content-center mb-0">Invoices</h3>
-        <a href="{{route('invoice.create')}}" class="list-group-item list-group-item-action">Add new invoice</a>
+        <a href="{{route('invoice.create')}}" class="list-group-item list-group-item-action ">Add new invoice</a>
         <a href="{{route('invoice.index')}}" class="list-group-item list-group-item-action">Show invoices </a>
         <a href="#" class="list-group-item list-group-item-action">Search by criteria</a>
     </div>

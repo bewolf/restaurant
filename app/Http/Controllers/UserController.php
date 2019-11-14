@@ -13,6 +13,7 @@ class UserController extends Controller
 {
     public function __construct()
     {
+        $this->middleware('auth');
         $this->middleware(['manager'], ['only' => ['index', 'create', 'destroy', 'fired.users']]);
     }
 

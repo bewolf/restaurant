@@ -8,6 +8,11 @@ use Illuminate\Support\Facades\DB;
 
 class ProductController extends Controller
 {
+    public function __construct()
+    {
+
+        $this->middleware(['shift_manager'], ['only' => 'index']);
+    }
     /**
      * Display a listing of the resource.
      *
@@ -15,8 +20,10 @@ class ProductController extends Controller
      */
     public function index()
     {
-        $products = DB::table('warehouse')->get();
-        return view('product.index', compact('products'));
+        $products = Product::get();
+        $minQuantity = 10;
+
+        return view('products.index', compact(['products', 'minQuantity']));
     }
 
     /**
@@ -26,7 +33,7 @@ class ProductController extends Controller
      */
     public function create()
     {
-        return view('product.create');
+        return view('products.create');
     }
 
     /**

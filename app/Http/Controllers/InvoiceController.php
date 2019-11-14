@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\InvoiceStoreRequest;
 use App\Models\Invoice;
+use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Rules\In;
@@ -10,6 +12,13 @@ use PhpParser\Node\Stmt\Else_;
 
 class InvoiceController extends Controller
 {
+
+    public function __construct()
+    {
+
+        $this->middleware(['shift_manager'], ['only' => ['index', 'create', 'update']]);
+    }
+
     public function index()
     {
         $invoices = Invoice::
@@ -37,7 +46,7 @@ class InvoiceController extends Controller
      * @param  \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(InvoiceStoreRequest $request)
     {
         for ($i = 0; $i < count($request->product_name); $i++) {
             $data[] = [
@@ -51,27 +60,41 @@ class InvoiceController extends Controller
                 'updated_at' => now(),
             ];
         }
+
         if (Invoice::CheckInvoiceNumberExists($request)) {
             return back()->with('error', 'Duplicate Invoice number')->withInput();
         }
-        for ($i = 0; $i <= count($data); $i++) {
-            dd($data[$i]    );
-            if (DB::table('warehouse')->where('name', $data[$i]->product_name)->exists()) {
-//                DB::table('warehouse')
-//                    ->where('name', $data[$i]->product_name)
-//                    ->update('quantity', 5);
+        $productsForWarehouse = [];
+        for ($i = 0; $i < count($data); $i++) {
+
+            if (Product::where('name', $data[$i]['product_name'])->exists()) {
+
+                Product::where('name', $data[$i]['product_name'])
+                    ->increment('quantity', $data[$i]['quantity']);
+
+                //  Need to be refactored
+//                if ( Product::where('name', $data[$i]['product_name'])->pluck('unit')->first() == $data[$i]['unit']) {
+//                    Product::where('name', $data[$i]['product_name'])
+//                        ->increment('quantity', $data[$i]['quantity']);
+//                } else {
+//                    return redirect()->route('invoice.create')->with('error', 'Wrong unit of product ' . $data[$i]['product_name']);
+//                }
+
+
             } else {
-                DB::table('warehouse')->insert([
-                    'name' => $data[$i]->product_name,
-                    'quantity' => $data[$i]->quantity,
-                    'unit' => $data[$i]->unit,
+                Product::insert([
+                    'name' => $data[$i]['product_name'],
+                    'quantity' => $data[$i]['quantity'],
+                    'unit' => $data[$i]['unit'],
+                    'created_at' => now(),
                     'updated_at' => now(),
                 ]);
             }
         }
 
         Invoice::insert($data);
-        return back()->with('success', 'Successful added invoice');
+
+        return redirect()->route('invoice.create')->with('success', 'Successful added invoice');
 
     }
 

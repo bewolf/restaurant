@@ -4,7 +4,7 @@
     <div class="row justify-content-center">
         <h1 class="col-md-6 text-center">Warehouse</h1>
         <div class="col-md-9 py-3">
-            <table id="dtBasicExample" class="table table-striped table-bordered table-sm" cellspacing="0" width="100%">
+            <table class="table table-striped table-bordered table-sm">
                 <thead class="thead-dark text-center">
                 <tr>
                     <th>Name</th>
@@ -16,7 +16,7 @@
                 @foreach($products as  $product)
                     <tr class="text-center">
                         <td>{{ $product->name }}</td>
-                        <td @if($product->quantity < 10) class="alert-danger" @endif>{{ $product->quantity }}</td>
+                        <td @if($product->quantity < $minQuantity) class="alert-danger" @endif>{{ $product->quantity }}</td>
                         <td>{{ $product->unit }}</td>
                     </tr>
                 @endforeach

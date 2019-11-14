@@ -28,12 +28,15 @@ class AuthServiceProvider extends ServiceProvider
         Gate::define('manager', function ($user) {
             return in_array('manager', $user->roles->pluck('name')->toArray());
         });
+
         Gate::define('user', function ($user) {
             return in_array('user', $user->roles->pluck('name')->toArray());
         });
+
         Gate::define('shift_manager', function ($user) {
             return in_array('shift_manager', $user->roles->pluck('name')->toArray());
         });
+
         Gate::define('waiter', function ($user) {
             return in_array('waiter', $user->roles->pluck('name')->toArray());
         });

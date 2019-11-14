@@ -36,6 +36,7 @@ Route::group(['middleware' => ['auth', 'manager']], function () {
     Route::resource('products', 'ProductController');
 });
 
+
 // All routes that need no authentication
 
 Route::get('/', 'GuestController@index')->middleware('guest')->name('index');

@@ -15,6 +15,9 @@ class ShiftManagerMiddleware
      */
     public function handle($request, Closure $next)
     {
-        return $next($request);
+        if (auth()->user()->roles->pluck('name')->contains('shift_manager')) {
+            return $next($request);
+        }
+        return back()->with('error', 'Unauthorised');
     }
 }
