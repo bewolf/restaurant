@@ -25,15 +25,25 @@ class AuthServiceProvider extends ServiceProvider
     {
         $this->registerPolicies();
 
-        Gate::define('manager', function($user) {
-        return in_array('manager', $user->roles->pluck('name')->toArray());
-    });
-        Gate::define('user', function($user) {
-        return in_array('user', $user->roles->pluck('name')->toArray());
-    });
-        Gate::define('shift_manager', function($user) {
+        Gate::define('manager', function ($user) {
+            return in_array('manager', $user->roles->pluck('name')->toArray());
+        });
+        Gate::define('user', function ($user) {
+            return in_array('user', $user->roles->pluck('name')->toArray());
+        });
+        Gate::define('shift_manager', function ($user) {
             return in_array('shift_manager', $user->roles->pluck('name')->toArray());
         });
+        Gate::define('waiter', function ($user) {
+            return in_array('waiter', $user->roles->pluck('name')->toArray());
+        });
+        Gate::define('bartender', function ($user) {
+            return in_array('bartender', $user->roles->pluck('name')->toArray());
+        });
+        Gate::define('cook', function ($user) {
+            return in_array('cook', $user->roles->pluck('name')->toArray());
+        });
+
 
     }
 }

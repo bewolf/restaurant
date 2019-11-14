@@ -5,8 +5,8 @@
     <div class="row justify-content-center">
         <h1 class="col-md-6 text-center">Workers</h1>
         <div class="col-md-12 py-3">
-            <div id="users" class="py-2">
-                <div class="row py-2 text-center sticky-top">
+            <div id="workersTable" class="py-2">
+                <div class="row py-2 text-center sticky-top ">
                     <div class="col-md-2">Name</div>
                     <div class="col-md-2">Username</div>
                     <div class="col-md-2">Email</div>
@@ -44,8 +44,8 @@
                                     <p>Permissions</p>
                                     @foreach($roles as $role)
                                     <div class="form-control">
-                                        <input type="checkbox" value="{{ $role->id }}" name="roles[]" id="{{ $role->name }}" @if(in_array($role->name, $user->roles->pluck("name")->toArray())) checked @endif>
-                                        <label class="pl-2" for="{{ $role->name }}">{{ $role->name }}</label>
+                                        <input type="checkbox" value="{{ $role->id }}" name="roles[]" id="{{ $role->name}}{{$user->id}}" @if(in_array($role->name, $user->roles->pluck("name")->toArray())) checked @endif>
+                                        <label class="pl-2" for="{{ $role->name }}{{$user->id}}">{{ $role->name }}</label>
                                     </div>
                                     @endforeach
                             </div>
@@ -64,7 +64,6 @@
         </div>
     </div>
 @endsection
-
 
 <script>
     function showRolesForm(id) {

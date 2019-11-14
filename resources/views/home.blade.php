@@ -1,16 +1,4 @@
 @extends('layouts.app')
-@section('nav')
-    @can('manager')
-        @include('manager.nav')
-    @endcan
-    @can('shift_manager')
-        @include('shift_manager.nav')
-    @endcan
-    @can('user')
-        @include('worker.nav')
-    @endcan
-
-@endsection
 
 @section('content')
     <div class="row justify-content-center">
@@ -19,14 +7,11 @@
 
     @include('session_alerts.alerts')
 
-    @can('manager')
-        @include('manager.index')
-    @endcan
-    @can('shift_manager')
-        @include('shift_manager.index')
-    @endcan
-    @can('user')
-        @include('worker.index')
-    @endcan
+    @canany(['manager','shift_manager'])
+        @include('layouts.admin_panel')
+    @endcanany
+    @canany(['user', 'waiter', 'bartender', 'cook'])
+        @include('layouts.workers_layout')
+    @endcanany
 
 @endsection

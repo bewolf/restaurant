@@ -39,22 +39,13 @@
                                placeholder="Confirm Password"
                                required>
                     </div>
-                    {{--<div class="form-group">--}}
-                        {{--<label for="role">Position</label>--}}
-                        {{--<select class="form-control" id="role" name="role">--}}
-                            {{--<option disabled selected>Select position</option>--}}
-                            {{--@foreach($roles as $key => $role)--}}
 
-                                {{--<option value="{{$key + 1}}">{{$role}}</option>--}}
-                            {{--@endforeach--}}
-                        {{--</select>--}}
-                    {{--</div>--}}
                     <div class="form-group">
                         <p>Permissions</p>
                         @foreach($roles as $key => $role)
                             <div class="form-control">
-                                <label for="{{$role}}"> {{$role}}</label>
                                 <input type="checkbox" value="{{$key + 1}}" name="role[]" id="{{$role}}">
+                                <label for="{{$role}}"> {{$role}}</label>
                             </div>
                         @endforeach
                     </div>
