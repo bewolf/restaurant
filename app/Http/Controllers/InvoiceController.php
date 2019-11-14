@@ -12,8 +12,7 @@ class InvoiceController extends Controller
 
     public function __construct()
     {
-
-        $this->middleware(['can:shift_manager'], ['only' => ['index', 'create', 'update']]);
+        $this->middleware('can:shift_manager');
     }
 
     public function index()

@@ -15,6 +15,14 @@ use Illuminate\Support\Facades\Route;
 
 Auth::routes(['register' => false]);
 
+// All routes that need no authentication
+
+Route::get('/', 'GuestController@index')->middleware('guest')->name('index');
+
+Route::post('/', 'GuestController@store')->middleware('guest')->name('store');
+
+
+
 // All routes that needs a logged in user
 
 Route::group(['middleware' => 'auth'], function () {
@@ -27,16 +35,7 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::resource('user', 'UserController');
 
-});
-// Manager routes
-Route::group(['middleware' => ['auth']], function () {
-
     Route::resource('invoice', 'InvoiceController');
 
     Route::resource('products', 'ProductController');
 });
-
-
-// All routes that need no authentication
-
-Route::get('/', 'GuestController@index')->middleware('guest')->name('index');

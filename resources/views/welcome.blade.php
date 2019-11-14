@@ -1,9 +1,11 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="row justify-content-center">
-    <h1 class="py-4">Welcome to G&G Restaurant</h1>
-</div>
+    @include('session_alerts.alerts')
 
-    @include('auth.login')
+    @if(!$haveRegisteredManager)
+        @include('layouts.create_first_manager')
+    @else
+        @include('auth.login')
+    @endif
 @endsection
