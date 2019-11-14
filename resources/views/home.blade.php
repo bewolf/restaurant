@@ -7,9 +7,7 @@
 
     @include('session_alerts.alerts')
 
-    @canany(['manager','shift_manager'])
-        @include('layouts.admin_panel')
-    @endcanany
+
     @canany(['user', 'waiter', 'bartender', 'cook'])
         @include('layouts.workers_layout')
     @endcanany
