@@ -5,7 +5,6 @@
     <h1 class="col-md-12 text-center">Add invoice</h1>
 
     <div class="col-md-12">
-        @include('session_alerts.alerts')
 
         <form method="post" action="{{route('invoice.store')}}">
             @csrf

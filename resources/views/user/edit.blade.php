@@ -4,7 +4,6 @@
     <div class="row justify-content-center col-md-12">
         <h1 class="col-md-9 text-center">Change profile data</h1>
         <div class="col-md-7">
-            @include('session_alerts.alerts')
             <h3 class="py-4">
                 Username: {{auth()->user()->username}}
             </h3>

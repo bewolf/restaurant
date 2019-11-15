@@ -1,7 +1,6 @@
 @extends('layouts.app')
 
 @section('content')
-    @include('session_alerts.alerts')
     <div class="row justify-content-center">
         <h1 class="col-md-6 text-center">Workers</h1>
         <div class="col-md-12 py-3">

@@ -59,6 +59,8 @@
         </div>
 
     </nav>
+
 @canany(['manager','shift_manager'])
     @include('layouts.admin_panel')
 @endcanany
+@include('session_alerts.alerts')
