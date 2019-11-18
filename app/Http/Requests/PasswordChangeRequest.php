@@ -2,9 +2,10 @@
 
 namespace App\Http\Requests;
 
+use App\Rules\CurrentPasswordCheckRule;
 use Illuminate\Foundation\Http\FormRequest;
 
-class UserUpdateRequest extends FormRequest
+class PasswordChangeRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -13,7 +14,7 @@ class UserUpdateRequest extends FormRequest
      */
     public function authorize()
     {
-        return true;
+        return auth()->check();
     }
 
     /**
@@ -24,8 +25,9 @@ class UserUpdateRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => 'required|min:2',
-            'email' => 'unique:users,email,'.auth()->id(),
+            'old_password' => ['required', 'min:3', new CurrentPasswordCheckRule],
+            'password' => ['required', 'min:3', 'confirmed', 'different:old_password'],
+            'password_confirmation' => ['required', 'min:3'],
         ];
     }
 }

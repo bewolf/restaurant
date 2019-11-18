@@ -2,12 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\PasswordChangeRequest;
 use App\Http\Requests\RolesUpdateRequest;
 use App\Models\Role;
 use App\Models\User;
 use App\Http\Requests\UserUpdateRequest;
 use App\Http\Requests\UserStoreRequest;
 use App\Models\UsersRoles;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
 
 class UserController extends Controller
 {
@@ -84,7 +87,6 @@ class UserController extends Controller
      */
     public function update(UserUpdateRequest $request, User $user)
     {
-        dd($request->all());
         $user->update($request->all());
 
         return redirect()->route('user.edit', $user)->with('success', 'Successful updated user');
@@ -125,4 +127,18 @@ class UserController extends Controller
 
         return redirect()->route('user.index')->with('success', 'Successful update worker permission');
     }
+
+    /**
+     * Change the password
+     *
+     * @param  \App\Http\Requests\PasswordChangeRequest $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function changePassword(PasswordChangeRequest $request)
+    {
+        auth()->user()->update(['password' => Hash::make($request->get('password'))]);
+
+        return back()->with('success', 'Success changes password');
+    }
+
 }

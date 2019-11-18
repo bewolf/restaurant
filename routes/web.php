@@ -33,6 +33,8 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::get('/ex-workers', 'UserController@exWorkers')->name('ex-workers');
 
+    Route::put('user/', 'UserController@changePassword')->name('password-change');
+
     Route::resource('user', 'UserController');
 
     Route::resource('invoice', 'InvoiceController');
