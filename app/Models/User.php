@@ -47,11 +47,9 @@ class User extends Authenticatable
     public static function addUser($data)
     {
         $password = Str::random(rand(10, 15));
-        if (self::isBulgarian($data['name'])) {
-        } else {
-            $data['username'] = self::createUsername($data['name']);
-        }
+        self::transliterate($data['name']);
 
+        $data['username'] = self::createUsername($data['name']);
         $data['password'] = Hash::make($password);
 
         $user = User::create($data);
@@ -83,9 +81,17 @@ class User extends Authenticatable
         Mail::to($data['email'])->send(new UserCreated($userMail));
     }
 
-    private static function isBulgarian($text)
+    private static function transliterate($textcyr = null, $textlat = null)
     {
-        return preg_match('/[А-Яа-я]/u', $text);
+        $cyr = array(
+            'ж', 'ч', 'щ', 'ш', 'ю', 'а', 'б', 'в', 'г', 'д', 'е', 'з', 'и', 'й', 'к', 'л', 'м', 'н', 'о', 'п', 'р', 'с', 'т', 'у', 'ф', 'х', 'ц', 'ъ', 'ь', 'я',
+            'Ж', 'Ч', 'Щ', 'Ш', 'Ю', 'А', 'Б', 'В', 'Г', 'Д', 'Е', 'З', 'И', 'Й', 'К', 'Л', 'М', 'Н', 'О', 'П', 'Р', 'С', 'Т', 'У', 'Ф', 'Х', 'Ц', 'Ъ', 'Ь', 'Я');
+        $lat = array(
+            'zh', 'ch', 'sht', 'sh', 'yu', 'a', 'b', 'v', 'g', 'd', 'e', 'z', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'r', 's', 't', 'u', 'f', 'h', 'c', 'y', 'x', 'q',
+            'Zh', 'Ch', 'Sht', 'Sh', 'Yu', 'A', 'B', 'V', 'G', 'D', 'E', 'Z', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'R', 'S', 'T', 'U', 'F', 'H', 'c', 'Y', 'X', 'Q');
+        if ($textcyr) return str_replace($cyr, $lat, $textcyr);
+        else if ($textlat) return str_replace($lat, $cyr, $textlat);
+        else return null;
     }
 
     private static function createUsername($data)
@@ -96,5 +102,4 @@ class User extends Authenticatable
 
         return $username;
     }
-
 }
