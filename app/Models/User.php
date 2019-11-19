@@ -10,7 +10,6 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
-use Monolog\Handler\IFTTTHandler;
 
 class User extends Authenticatable
 {
@@ -44,11 +43,19 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
+    public function roles()
+    {
+        return $this->belongsToMany(Role::class, 'users_roles');
+    }
+
     public static function addUser($data)
     {
         $password = Str::random(rand(10, 15));
         self::transliterate($data['name']);
 
+        if (!self::createUsername($data['name'])) {
+            return redirect()->route('user.create')->with('error', 'Need at least two names');
+        }
         $data['username'] = self::createUsername($data['name']);
         $data['password'] = Hash::make($password);
 
@@ -63,13 +70,9 @@ class User extends Authenticatable
         }
         self::sendMail($data, $password);
 
-        return redirect()->route('user.create')->with('success', 'Successful created user');
+        return redirect()->route('user.create')->with('success', 'Successful created user')->withInput();
     }
 
-    public function roles()
-    {
-        return $this->belongsToMany(Role::class, 'users_roles');
-    }
 
     private static function sendMail($data, $password)
     {
@@ -96,6 +99,9 @@ class User extends Authenticatable
 
     private static function createUsername($data)
     {
+        if (str_word_count($data) < 2) {
+            return false;
+        }
         $fistName = strtolower(substr($data, 0, 1));
         $lastName = strtolower(explode(' ', $data)[1]);
         $username = $fistName . $lastName . (User::max('id') + 1);
