@@ -19,7 +19,6 @@ class UserController extends Controller
         $this->middleware(['can:manager'], ['only' => ['index', 'create', 'destroy', 'fired.users']]);
     }
 
-
     /**
      * Display a listing of the resource.
      *
@@ -29,8 +28,8 @@ class UserController extends Controller
     public function index()
     {
         $users = User::paginate(10);
-
         $roles = Role::all();
+
         return view('user.index', compact(['users', 'roles']));
     }
 
@@ -65,6 +64,7 @@ class UserController extends Controller
      */
     public function show(User $user)
     {
+        //
     }
 
     /**
@@ -116,14 +116,9 @@ class UserController extends Controller
     {
         $user = User::find($request->user);
         $roles = $request->roles;
-        UsersRoles::where('user_id', $request->user)->delete();
 
-        for ($i = 0; $i < count($roles); $i++) {
-            UsersRoles::insert([
-                'user_id' => $user->id,
-                'role_id' => $roles[$i],
-            ]);
-        }
+        $user->roles()->detach();
+        $user->roles()->attach($roles);
 
         return redirect()->route('user.index')->with('success', 'Successful update worker permission');
     }
