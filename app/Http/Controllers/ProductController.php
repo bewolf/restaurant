@@ -22,7 +22,6 @@ class ProductController extends Controller
     {
         $products = Product::get();
         $minQuantity = 10;
-
         return view('products.index', compact(['products', 'minQuantity']));
     }
 

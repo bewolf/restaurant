@@ -8,8 +8,8 @@
 
     <div id="warehouse_panel">
         <h3 class="toast-header justify-content-center mb-0">Foods</h3>
-        <a href="#" class="list-group-item list-group-item-action">Add new food</a>
-        <a href="#" class="list-group-item list-group-item-action">Show foods</a>
+        <a href="{{route('food.create')}}" class="list-group-item list-group-item-action">Add new food</a>
+        <a href="{{route('food.index')}}" class="list-group-item list-group-item-action">Show foods</a>
         <a href="#" class="list-group-item list-group-item-action">Search by criteria</a>
     </div>
 

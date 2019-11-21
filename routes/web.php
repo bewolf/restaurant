@@ -40,4 +40,6 @@ Route::group(['middleware' => 'auth'], function () {
     Route::resource('invoice', 'InvoiceController');
 
     Route::resource('products', 'ProductController');
+
+    Route::resource('food', 'FoodController');
 });
