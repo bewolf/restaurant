@@ -2,9 +2,9 @@
 
 @section('content')
 
-    <h1 class="col-md-12 text-center">Add invoice</h1>
+    <h1 class="col-md-10 text-center">Add invoice</h1>
 
-    <div class="col-md-12">
+    <div class="row col-md-10">
 
         <form method="post" action="{{route('invoice.store')}}">
             @csrf
@@ -67,14 +67,15 @@
             </div>
 
         </form>
-
-        <a class="btn btn-primary mt-2" href="{{route('home')}}">Back to Home</a>
+        <div class="col-md-10 pl-0">
+            <a class="btn btn-primary mt-2" href="{{route('home')}}">Back to Home</a>
+        </div>
 
     </div>
 
 
 @endsection
-<script src="//ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 
 <script type="text/javascript">
     $(document).ready(function () {
@@ -120,7 +121,5 @@
         $('#invoice_form_input_fields').on('click', '#remove', function () {
             $(this).parents().eq(1).remove();
         });
-
-
     });
 </script>

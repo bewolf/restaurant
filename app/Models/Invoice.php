@@ -12,8 +12,6 @@ class Invoice extends Model
 
     public static function CheckInvoiceNumberExists($request)
     {
-        $result = Invoice::where('number', $request->number)->exists();
-
-        return $result;
+        return Invoice::where('number', $request->number)->exists();
     }
 }
