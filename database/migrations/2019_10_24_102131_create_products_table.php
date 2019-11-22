@@ -18,6 +18,7 @@ class CreateProductsTable extends Migration
             $table->string('name');
             $table->unsignedInteger('quantity');
             $table->set('unit', ['kg', 'grams', 'qty.', 'cm', 'liters']);
+            $table->decimal('sell_price')->default(0.00);
             $table->timestamps();
             $table->softDeletes();
         });

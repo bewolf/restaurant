@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\ProductsUpdateSellPriceRequest;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -20,8 +21,15 @@ class ProductController extends Controller
      */
     public function index()
     {
-        $products = Product::get();
+        $query = 'SELECT product_name, ROUND(AVG(unit_price),2) as avg_price, products.quantity, products.unit, products.sell_price 
+                  FROM invoices 
+                  INNER JOIN products 
+                  ON products.name = invoices.product_name 
+                  GROUP BY product_name, quantity,unit, products.sell_price';
+
+        $products = DB::select($query);
         $minQuantity = 10;
+
         return view('products.index', compact(['products', 'minQuantity']));
     }
 
@@ -39,7 +47,7 @@ class ProductController extends Controller
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request $request
-     * @return \Illuminate\Http\Response
+     * @return void
      */
     public function store(Request $request)
     {
@@ -49,10 +57,10 @@ class ProductController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Warehouse $warehouse
-     * @return \Illuminate\Http\Response
+     * @param Product $product
+     * @return void
      */
-    public function show(Product $warehouse)
+    public function show(Product $product)
     {
         //
     }
@@ -60,10 +68,10 @@ class ProductController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Warehouse $warehouse
-     * @return \Illuminate\Http\Response
+     * @param Product $product
+     * @return void
      */
-    public function edit(Product $warehouse)
+    public function edit(Product $product)
     {
         //
     }
@@ -72,19 +80,21 @@ class ProductController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request $request
-     * @param  \App\Warehouse $warehouse
-     * @return \Illuminate\Http\Response
+     * @param $name
+     * @return \Illuminate\Http\RedirectResponse
      */
-    public function update(Request $request, Product $warehouse)
+    public function update(ProductsUpdateSellPriceRequest $request, $name)
     {
-        //
+        Product::where('name', $name)->update(['sell_price' => $request->sell_price]);
+
+        return redirect()->route('products.index')->with('success', 'Successful update product sell price.');
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Warehouse $warehouse
-     * @return \Illuminate\Http\Response
+     * @param Product $warehouse
+     * @return void
      */
     public function destroy(Product $warehouse)
     {
