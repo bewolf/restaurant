@@ -7,7 +7,7 @@
             <table class="table table-striped table-bordered table-sm">
                 <thead class="thead-dark text-center">
                 <tr>
-                    <th >Name</th>
+                    <th>Name</th>
                     <th>Quantity</th>
                     <th>Unit</th>
                     <th>Avg. Price</th>
@@ -16,20 +16,28 @@
                 </tr>
                 </thead>
                 <tbody>
-                @foreach($products as  $product)
+                @foreach($products as $key => $product)
+
                     <tr class="text-center">
                         <td>{{ $product->product_name }}</td>
-                        <td @if($product->quantity < $minQuantity) class="badge-danger"  title='Please order'@endif>{{ $product->quantity }}</td>
+                        <td @if($product->quantity < $minQuantity) class="badge-danger"
+                            title='Please order'@endif>{{ $product->quantity }}</td>
                         <td>{{ $product->unit }}</td>
                         <td>{{ $product->avg_price}}</td>
-                        <td @if($product->sell_price == 0) class="badge-danger" title='Change sell price'@endif>{{ $product->sell_price}}</td>
-                        <td>
-                            <form method="post" action="{{route('products.update', $product->product_name)}}">
+                        <td @if($product->sell_price <= $product->avg_price) class="badge-danger"
+                            title='Change sell price'@endif>{{ $product->sell_price}}</td>
+                        <td class="change_sell_price_forms">
+                            <form method="post" class="change_sell_price_forms"
+                                  action="{{route('products.update', $product->product_name)}}"
+                                  id="{{$product->id}}" style="display: none">
                                 @csrf
                                 @method('patch')
-                                <input name="sell_price" class="form-control float-left col-md-2" type="text">
-                                <input class="form-control col-md-2 btn btn-success" type="submit" value="Set">
+                                <input name="sell_price" class="form-control float-left col-md-5" type="text">
+                                <input class="form-control  btn btn-success col-md-5" type="submit" value="Set">
                             </form>
+                            <button class="btn btn-success" onclick="showUpdatePriceForm({{ $product->id}})">
+                                Change
+                            </button>
                         </td>
                     </tr>
                 @endforeach
@@ -39,3 +47,13 @@
         </div>
     </div>
 @endsection
+
+<script>
+    function showUpdatePriceForm(id) {
+
+        document.getElementById(id).nextElementSibling.style.display = 'none';
+
+        document.getElementById(id).style.display = 'block';
+    }
+
+</script>

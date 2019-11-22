@@ -21,11 +21,11 @@ class ProductController extends Controller
      */
     public function index()
     {
-        $query = 'SELECT product_name, ROUND(AVG(unit_price),2) as avg_price, products.quantity, products.unit, products.sell_price 
+        $query = 'SELECT product_name, ROUND(AVG(unit_price),2) as avg_price, products.quantity, products.unit, products.sell_price, products.id 
                   FROM invoices 
                   INNER JOIN products 
                   ON products.name = invoices.product_name 
-                  GROUP BY product_name, quantity,unit, products.sell_price';
+                  GROUP BY product_name, quantity,unit, products.sell_price, products.id';
 
         $products = DB::select($query);
         $minQuantity = 10;
