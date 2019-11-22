@@ -82,6 +82,7 @@ class InvoiceController extends Controller
                     'name' => $data[$i]['product_name'],
                     'quantity' => $data[$i]['quantity'],
                     'unit' => $data[$i]['unit'],
+                    'sell_price' => $data[$i]['unit_price'],
                     'created_at' => now(),
                     'updated_at' => now(),
                 ]);
