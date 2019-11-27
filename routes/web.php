@@ -22,7 +22,6 @@ Route::get('/', 'GuestController@index')->middleware('guest')->name('index');
 Route::post('/', 'GuestController@store')->middleware('guest')->name('store');
 
 
-
 // All routes that needs a logged in user
 
 Route::group(['middleware' => 'auth'], function () {
@@ -39,7 +38,11 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::resource('invoice', 'InvoiceController');
 
+    Route::patch('is_a_drink', 'ProductController@isADrink')->name('isADrink');
+
     Route::resource('products', 'ProductController');
 
     Route::resource('food', 'FoodController');
+
+    Route::resource('order', 'OrderController');
 });

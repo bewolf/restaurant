@@ -21,11 +21,11 @@ class ProductController extends Controller
      */
     public function index()
     {
-        $query = 'SELECT product_name, ROUND(AVG(unit_price),2) as avg_price, products.quantity, products.unit, products.sell_price, products.id 
+        $query = 'SELECT product_name, ROUND(AVG(unit_price),2) as avg_price, products.quantity, products.unit, products.sell_price, products.id, products.is_drink 
                   FROM invoices 
                   INNER JOIN products 
                   ON products.name = invoices.product_name 
-                  GROUP BY product_name, quantity,unit, products.sell_price, products.id';
+                  GROUP BY product_name, quantity,unit, products.sell_price, products.id, products.is_drink';
 
         $products = DB::select($query);
         $minQuantity = 10;
@@ -99,5 +99,14 @@ class ProductController extends Controller
     public function destroy(Product $warehouse)
     {
         //
+    }
+
+    public function isADrink(Request $request)
+    {
+        Product::where('id', $request->id)->update([
+            'is_drink' => $request->has('is_drink')
+        ]);
+
+        return back();
     }
 }
