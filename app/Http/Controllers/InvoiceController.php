@@ -159,14 +159,16 @@ class InvoiceController extends Controller
                 'start_date' => 'required|date',
                 'end_date' => 'required|date',
                 'product' => 'required',
-                'min_product_quantity' => 'required|integer|min:0'
+                'min_product_quantity' => 'nullable|integer|min:0'
             ]);
 
             $request = request()->all();
             $start_date = $request['start_date'];
             $end_date = $request['end_date'] . ' 23:59:59';
             $product = $request['product'];
-            $min_product_quantity = $request['min_product_quantity'];
+            if (request()->has('min_product_quantity')) {
+                $min_product_quantity = $request['min_product_quantity'];
+            }
 
             $query = "
                     SELECT invoices.number, invoices.created_at, CAST(invoices.created_at AS DATE) as created_at
@@ -177,7 +179,7 @@ class InvoiceController extends Controller
             if ($product != 'all') {
                 $query .= " AND product_name = '$product' ";
             }
-            if ($min_product_quantity != 0) {
+            if (request()->has('min_product_quantity') && $min_product_quantity != 0) {
                 $query .= " AND quantity >= '$min_product_quantity' ";
             }
             $query .= " GROUP BY invoices . number, invoices . created_at";
