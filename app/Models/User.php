@@ -102,9 +102,9 @@ class User extends Authenticatable
         if (str_word_count($data) < 2) {
             return false;
         }
-        $fistName = strtolower(substr($data, 0, 1));
-        $lastName = strtolower(explode(' ', $data)[1]);
-        $username = $fistName . $lastName . (User::max('id') + 1);
+        $fist_name = strtolower(substr($data, 0, 1));
+        $last_name = strtolower(explode(' ', $data)[1]);
+        $username = $fist_name . $last_name . (User::max('id') + 1);
 
         return $username;
     }

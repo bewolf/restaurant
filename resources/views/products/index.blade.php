@@ -21,7 +21,7 @@
 
                     <tr class="text-center">
                         <td>{{ $product->product_name }}</td>
-                        <td @if($product->quantity < $minQuantity) class="alert-danger"
+                        <td @if($product->quantity < $min_quantity) class="alert-danger"
                             title='Please order'@endif>{{ $product->quantity }}</td>
                         <td>{{ $product->unit }}</td>
                         <td>{{ $product->avg_price}}</td>
@@ -61,6 +61,7 @@
                 @endforeach
                 </tbody>
             </table>
+            <div>If <strong>Is drink</strong> field is "checked" means that drink will appear in Order page</div>
             <a class="btn btn-primary" href="{{route('home')}}">Back to Home</a>
         </div>
     </div>

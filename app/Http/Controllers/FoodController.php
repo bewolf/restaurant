@@ -7,7 +7,6 @@ use App\Models\Food;
 use App\Models\FoodsProducts;
 use App\Models\Product;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 
 class FoodController extends Controller
 {
@@ -40,10 +39,10 @@ class FoodController extends Controller
 
     public function edit(Food $food)
     {
-        $productsData = Product::join('foods_products', 'products.id','=', 'foods_products.product_id')->where('food_id', $food->id)->get();
+        $products_data = Product::join('foods_products', 'products.id','=', 'foods_products.product_id')->where('food_id', $food->id)->get();
         $warehouse = Product::get();
 
-        return view('foods.edit', compact(['food', 'warehouse', 'productsData']));
+        return view('foods.edit', compact(['food', 'warehouse', 'products_data']));
     }
 
 
@@ -58,7 +57,7 @@ class FoodController extends Controller
         $productsData = Product::get();
         $products = [];
 
-        foreach ($productsData->all() as $product) {
+            foreach ($productsData->all() as $product) {
             $products[$product['name']] = $product['unit'];
         }
 
@@ -93,6 +92,7 @@ class FoodController extends Controller
     {
 
         $food = Food::find($request->food);
+        $food->update(array('sell_price' => $request->sell_price));
         $products = $request->products;
         $quantity = $request->quantity;
 
