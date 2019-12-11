@@ -65,34 +65,51 @@ $cyan: #6cb2eb;
 
   }
 }
+
 /*Add invoice page*/
 
-#add{
+#add {
   background-color: green;
   border-radius: 20px;
   i {
     color: white;
   }
 }
+
 /*Workers page*/
 
 #workersTable div.sticky-top {
   background-color: #F8FAFC;
-  font-weight:bold;
+  font-weight: bold;
   font-size: 1.2em;
 
 }
+
 /* End of Workers page*/
 
 /*Create food page*/
 #food_form_input_fields > #row {
   min-height: 60px;
 }
+
 /*End of Create food page*/
 
 /*Show products page*/
-#app td.change_sell_price_forms{
+#app td.change_sell_price_forms {
   max-width: 80px;
 }
 
 /*End of Show products page*/
+
+/*Create new order page*/
+#form_header {
+  max-width: 150px;
+}
+
+/*End of Create new order page*/
+
+/*Invoice Statistics page*/
+
+#search_form > div > div:nth-child(n) {
+  max-width: 218px;
+}

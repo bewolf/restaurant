@@ -1,8 +1,8 @@
 @extends('layouts.app')
 @section('content')
     <div class="row col-md-10">
-        <div class="col-md-10"><h3>Invoice Num. {{$invoiceData[0]->number}} </h3></div>
-        <div class="col-md-10"><h3>Invoice Date. {{$invoiceData[0]->created_at->format('d.M.Y.')}} </h3></div>
+        <div class="col-md-10"><h3>Invoice Num. {{$invoice_data[0]->number}} </h3></div>
+        <div class="col-md-10"><h3>Invoice Date. {{$invoice_data[0]->created_at->format('d.M.Y.')}} </h3></div>
         <table class="table">
             <tr>
                 <th scope="col">Product name</th>
@@ -11,7 +11,7 @@
                 <th scope="col">Unit price</th>
                 <th scope="col">Total price</th>
             </tr>
-            @foreach($invoiceData as $data)
+            @foreach($invoice_data as $data)
                 <tr>
                     <td>{{$data->product_name}}</td>
                     <td>{{$data->quantity}}</td>

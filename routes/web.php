@@ -34,9 +34,13 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::put('user/', 'UserController@changePassword')->name('password-change');
 
+    Route::get('stats', 'UserController@stats')->name('stats');
+
     Route::resource('user', 'UserController');
 
     Route::resource('invoice', 'InvoiceController');
+
+    Route::get('invoice-statistics', 'InvoiceController@statistics')->name('invoice-statistics');
 
     Route::patch('is_a_drink', 'ProductController@isADrink')->name('isADrink');
 

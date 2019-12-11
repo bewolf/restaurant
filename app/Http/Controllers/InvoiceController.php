@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\InvoicesFilterRequest;
 use App\Http\Requests\InvoiceStoreRequest;
 use App\Models\Invoice;
 use App\Models\Product;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class InvoiceController extends Controller
 {
@@ -103,9 +105,9 @@ class InvoiceController extends Controller
      */
     public function show($number)
     {
-        $invoiceData = Invoice::where('number', $number)->get();
+        $invoice_data = Invoice::where('number', $number)->get();
 
-        return view('invoice.show', compact('invoiceData'));
+        return view('invoice.show', compact('invoice_data'));
 
     }
 
@@ -141,5 +143,48 @@ class InvoiceController extends Controller
     public function destroy(Invoice $invoice)
     {
         //
+    }
+
+    /*Show statistics page*/
+
+    public function statistics()
+    {
+        $products = DB::select('SELECT product_name 
+                                      FROM invoices 
+                                      GROUP BY product_name');
+        $result = null;
+        if (request()->all()) {
+
+            request()->validate([
+                'start_date' => 'required|date',
+                'end_date' => 'required|date',
+                'product' => 'required',
+                'min_product_quantity' => 'required|integer|min:0'
+            ]);
+
+            $request = request()->all();
+            $start_date = $request['start_date'];
+            $end_date = $request['end_date'] . ' 23:59:59';
+            $product = $request['product'];
+            $min_product_quantity = $request['min_product_quantity'];
+
+            $query = "
+                    SELECT invoices.number, invoices.created_at, CAST(invoices.created_at AS DATE) as created_at
+                    FROM invoices 
+                    WHERE created_at > '$start_date'  
+                    AND created_at < '$end_date'";
+
+            if ($product != 'all') {
+                $query .= " AND product_name = '$product' ";
+            }
+            if ($min_product_quantity != 0) {
+                $query .= " AND quantity >= '$min_product_quantity' ";
+            }
+            $query .= " GROUP BY invoices . number, invoices . created_at";
+
+            $result = DB::select($query);
+        }
+
+        return view('invoice.statistics', compact('products', 'result'));
     }
 }
