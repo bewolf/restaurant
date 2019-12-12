@@ -28,9 +28,9 @@ class ProductController extends Controller
                   GROUP BY product_name, quantity,unit, products.sell_price, products.id, products.is_drink';
 
         $products = DB::select($query);
-        $minQuantity = 10;
+        $min_quantity = 10;
 
-        return view('products.index', compact(['products', 'minQuantity']));
+        return view('products.index', compact(['products', 'min_quantity']));
     }
 
     /**

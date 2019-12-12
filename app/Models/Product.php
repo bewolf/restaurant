@@ -21,6 +21,6 @@ class Product extends Model
      */
 
     protected $fillable = [
-        'name', 'quantity', 'unit',
+        'name', 'quantity', 'unit', 'is_drink'
     ];
 }
