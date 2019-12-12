@@ -6,8 +6,13 @@
             @csrf
             @method('patch')
             {{--<input type="text" hidden name="food" value="">--}}
+            <div class="form-group col-md-7">
+                <label for="sell_price">
+                    <input type="text" name="sell_price" class="form-control" value="{{$food->sell_price}}">
+                </label>
+            </div>
 
-            @foreach($productsData as $product)
+            @foreach($products_data as $product)
                 <div class="form-group col-md-6">
                     <label class="d-inline-block" for="name">Product</label>
                     <select class="form-control" name="products[]">

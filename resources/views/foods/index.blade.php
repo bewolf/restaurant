@@ -6,6 +6,7 @@
         <table class="table text-center">
             <tr>
                 <th scope="col">Foods</th>
+                <th scope="col">Sell price</th>
                 <th scope="col">Date</th>
                 <th scope="col">View ingredients</th>
                 <th scope="col">Edit recipe</th>
@@ -14,6 +15,7 @@
             @foreach($foods as $food)
                 <tr>
                     <td>{{$food->name}}</td>
+                    <td>{{$food->sell_price}}</td>
                     <td>{{$food->created_at->toDateString()}}</td>
                     <td><a class="btn btn-info" href="{{route('food.show', $food->id)}}">Show ingredients</a></td>
                     <td><a class="btn btn-secondary" href="{{route('food.edit', $food->id)}}">Edit</a></td>

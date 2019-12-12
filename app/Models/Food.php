@@ -19,7 +19,7 @@ class Food extends Model
      */
 
     protected $fillable = [
-        'name',
+        'name', 'sell_price'
     ];
 
     public static function addFood($request)
