@@ -18,9 +18,8 @@
                 </thead>
                 <tbody>
                 @foreach($products as $key => $product)
-
                     <tr class="text-center">
-                        <td>{{ $product->product_name }}</td>
+                        <td>{{ $product->name }}</td>
                         <td @if($product->quantity < $min_quantity) class="alert-danger"
                             title='Please order'@endif>{{ $product->quantity }}</td>
                         <td>{{ $product->unit }}</td>
@@ -29,7 +28,7 @@
                             title='Change sell price'@endif>{{ $product->sell_price}}</td>
                         <td class="change_sell_price_forms">
                             <form method="post" class="change_sell_price_forms mb-0"
-                                  action="{{route('products.update', $product->product_name)}}"
+                                  action="{{route('products.update', $product->name)}}"
                                   id="{{$product->id}}" style="display: none">
                                 @csrf
                                 @method('patch')
