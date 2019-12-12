@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\InvoicesFilterRequest;
 use App\Http\Requests\InvoiceStoreRequest;
 use App\Models\Invoice;
 use App\Models\Product;
@@ -171,7 +170,7 @@ class InvoiceController extends Controller
             }
 
             $query = "
-                    SELECT invoices.number, invoices.created_at, CAST(invoices.created_at AS DATE) as created_at
+                    SELECT invoices.number, CAST(invoices.created_at AS DATE) as created_at
                     FROM invoices 
                     WHERE created_at > '$start_date'  
                     AND created_at < '$end_date'";
@@ -179,7 +178,7 @@ class InvoiceController extends Controller
             if ($product != 'all') {
                 $query .= " AND product_name = '$product' ";
             }
-            if (request()->has('min_product_quantity') && $min_product_quantity != 0) {
+            if (request()->has('min_product_quantity') && $min_product_quantity > 0) {
                 $query .= " AND quantity >= '$min_product_quantity' ";
             }
             $query .= " GROUP BY invoices . number, invoices . created_at";

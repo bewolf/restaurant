@@ -27,7 +27,6 @@ class FoodController extends Controller
     }
 
 
-
     public function show(Food $food)
     {
         $quantity = FoodsProducts::where('food_id', $food->id)->pluck('product_quantity');
@@ -36,15 +35,13 @@ class FoodController extends Controller
     }
 
 
-
     public function edit(Food $food)
     {
-        $products_data = Product::join('foods_products', 'products.id','=', 'foods_products.product_id')->where('food_id', $food->id)->get();
+        $products_data = Product::join('foods_products', 'products.id', '=', 'foods_products.product_id')->where('food_id', $food->id)->get();
         $warehouse = Product::get();
 
         return view('foods.edit', compact(['food', 'warehouse', 'products_data']));
     }
-
 
 
     /**
@@ -54,16 +51,15 @@ class FoodController extends Controller
      */
     public function create()
     {
-        $productsData = Product::get();
+        $products_data = Product::get();
         $products = [];
 
-            foreach ($productsData->all() as $product) {
+        foreach ($products_data->all() as $product) {
             $products[$product['name']] = $product['unit'];
         }
 
         return view('foods.create', compact('products'));
     }
-
 
 
     public function destroy($id)
@@ -85,7 +81,6 @@ class FoodController extends Controller
     {
         return Food::addFood($request->all());
     }
-
 
 
     public function update(Request $request)
