@@ -45,6 +45,7 @@ class InvoiceController extends Controller
      */
     public function store(InvoiceStoreRequest $request)
     {
+//        $data = [];
         for ($i = 0; $i < count($request->product_name); $i++) {
             $data[] = [
                 'number' => $request->number,
@@ -57,11 +58,11 @@ class InvoiceController extends Controller
                 'updated_at' => now(),
             ];
         }
-
+//        dd($data);
         if (Invoice::CheckInvoiceNumberExists($request)) {
             return back()->with('error', 'Duplicate Invoice number')->withInput();
         }
-        $productsForWarehouse = [];
+
         for ($i = 0; $i < count($data); $i++) {
 
             if (Product::where('name', $data[$i]['product_name'])->exists()) {
@@ -76,8 +77,6 @@ class InvoiceController extends Controller
 //                } else {
 //                    return redirect()->route('invoice.create')->with('error', 'Wrong unit of product ' . $data[$i]['product_name']);
 //                }
-
-
             } else {
                 Product::insert([
                     'name' => $data[$i]['product_name'],
@@ -90,7 +89,22 @@ class InvoiceController extends Controller
             }
         }
 
-        Invoice::insert($data);
+        $data_for_invoice = [];
+        for ($i = 0; $i < count($data); $i++) {
+            $data_for_invoice[] = [
+                'number' => $data[$i]['number'],
+                'product_id' => Product::where('name', $data[$i]['product_name'])->pluck('id')[0],
+                'quantity' => $data[$i]['quantity'],
+                'unit_price' => $data[$i]['unit_price'],
+                'added_by' => $data[$i]['added_by'],
+                'created_at' => $data[$i]['created_at'],
+                'updated_at' => $data[$i]['updated_at'],
+            ];
+
+        }
+
+
+        Invoice::insert($data_for_invoice);
 
         return redirect()->route('invoice.create')->with('success', 'Successful added invoice');
 
@@ -148,9 +162,8 @@ class InvoiceController extends Controller
 
     public function statistics()
     {
-        $products = DB::select('SELECT product_name 
-                                      FROM invoices 
-                                      GROUP BY product_name');
+        $products = DB::select('SELECT id, name 
+                                      FROM products ');
         $result = null;
         if (request()->all()) {
 
@@ -176,7 +189,7 @@ class InvoiceController extends Controller
                     AND created_at < '$end_date'";
 
             if ($product != 'all') {
-                $query .= " AND product_name = '$product' ";
+                $query .= " AND product_id = '$product' ";
             }
             if (request()->has('min_product_quantity') && $min_product_quantity > 0) {
                 $query .= " AND quantity >= '$min_product_quantity' ";

@@ -16,9 +16,9 @@ class CreateInvoicesTable extends Migration
         Schema::create('invoices', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->unsignedInteger('number');
-            $table->string('product_name');
+            $table->unsignedInteger('product_id');
+            $table->foreign('product_id')->references('id')->on('products');
             $table->double('quantity');
-            $table->set('unit', ['kg', 'grams', 'qty.', 'cm', 'liters']);
             $table->decimal('unit_price');
             $table->unsignedBigInteger('added_by');
             $table->foreign('added_by')->references('id')->on('users');

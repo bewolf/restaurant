@@ -13,9 +13,9 @@
             </tr>
             @foreach($invoice_data as $data)
                 <tr>
-                    <td>{{$data->product_name}}</td>
+                    <td>{{$data->product->name}}</td>
                     <td>{{$data->quantity}}</td>
-                    <td>{{$data->unit}}</td>
+                    <td>{{$data->product->unit}}</td>
                     <td>{{$data->unit_price}}</td>
                     <td>{{$data->unit_price * $data->quantity}}</td>
                 </tr>

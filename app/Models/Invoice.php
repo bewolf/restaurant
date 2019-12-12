@@ -7,8 +7,13 @@ use Illuminate\Database\Eloquent\Model;
 class Invoice extends Model
 {
     protected $fillable = [
-        'number', 'product_name', 'quantity', 'unit', 'unit_price',
+        'number', 'product_id', 'quantity', 'unit_price',
     ];
+
+    public function product()
+    {
+        return $this->belongsTo(Product::class);
+    }
 
     public static function CheckInvoiceNumberExists($request)
     {
