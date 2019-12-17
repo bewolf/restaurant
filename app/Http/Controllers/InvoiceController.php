@@ -183,7 +183,7 @@ class InvoiceController extends Controller
             }
 
             $query = "
-                    SELECT invoices.number, CAST(invoices.created_at AS DATE) as created_at
+                    SELECT invoices.number, invoices.created_at
                     FROM invoices 
                     WHERE created_at > '$start_date'  
                     AND created_at < '$end_date'";
