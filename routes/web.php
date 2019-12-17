@@ -42,11 +42,11 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::get('invoice-statistics', 'InvoiceController@statistics')->name('invoice-statistics');
 
-    Route::patch('is_a_drink', 'ProductController@isADrink')->name('isADrink');
-
     Route::resource('products', 'ProductController');
 
-    Route::resource('food', 'FoodController');
+    Route::resource('product-types', 'ProductTypesController');
+
+    Route::resource('table', 'TablesController');
 
     Route::resource('order', 'OrderController');
 });

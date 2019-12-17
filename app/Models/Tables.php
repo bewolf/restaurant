@@ -4,9 +4,11 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class FoodsProducts extends Model
+class Tables extends Model
 {
+    public $timestamps = false;
+
     protected $fillable = [
-        'food_id', 'product_id', 'quantity'
+        'zone', 'is_available'
     ];
 }
