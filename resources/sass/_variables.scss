@@ -77,6 +77,14 @@ $cyan: #6cb2eb;
 }
 
 /*Workers page*/
+#tables > a, #app div.current_orders input {
+  height: 100px;
+  width: 100px;
+  font-size: 2.5em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
 
 #workersTable div.sticky-top {
   background-color: #F8FAFC;
@@ -86,13 +94,6 @@ $cyan: #6cb2eb;
 }
 
 /* End of Workers page*/
-
-/*Create food page*/
-#food_form_input_fields > #row {
-  min-height: 60px;
-}
-
-/*End of Create food page*/
 
 /*Show products page*/
 #app td.change_sell_price_forms {
@@ -113,3 +114,12 @@ $cyan: #6cb2eb;
 #search_form > div > div:nth-child(n) {
   max-width: 218px;
 }
+
+/*End of Statistics page*/
+
+/*Product Type page*/
+#product_type_info {
+  //min-width: 125px;
+}
+
+/*End of Product Type page*/

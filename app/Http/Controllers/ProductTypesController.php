@@ -100,9 +100,9 @@ class ProductTypesController extends Controller
         if (count(Product::where('product_type', '=', $id)->get()) == 0) {
             ProductType::destroy($id);
 
-            return redirect()->route('product-types.index')->with('success', 'Successful deleted Producy Type');
+            return redirect()->route('product-types.index')->with('success', 'Successful deleted Product Type');
         }
 
-        return redirect()->route('product-types.index')->with('error', 'Can not delete this Product Type');
+        return redirect()->route('product-types.index')->with('error', 'Can not delete this Product Type. This product type is used in some Products.');
     }
 }

@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\ProductsUpdateSellPriceRequest;
+use App\Http\Requests\ProductUpdateRequest;
+use App\Models\Food;
+use App\Models\FoodsProducts;
 use App\Models\Product;
+use App\Models\ProductType;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -11,7 +14,7 @@ class ProductController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('can:shift_manager');
+        $this->middleware('can:manager');
     }
 
     /**
@@ -22,16 +25,19 @@ class ProductController extends Controller
     public function index()
     {
         $query = 'SELECT 
-	                ROUND(AVG(unit_price),2) as avg_price, products.name, products.quantity, products.unit, products.sell_price, products.id, products.is_drink 
+                    ROUND(AVG(unit_price),2) as avg_price, products.name, products.quantity, products.unit, products.sell_price, products.id, product_types.type
                     FROM invoices 
                     INNER JOIN products 
-                    ON products.id = invoices.product_id 
-                    GROUP BY products.name, quantity,unit, products.sell_price, products.id, products.is_drink';
+                    ON products.id = invoices.product_id
+                    LEFT JOIN product_types
+                    ON products.product_type = product_types.id 
+                    GROUP BY products.name, quantity,unit, products.sell_price, products.id, product_types.type';
 
         $products = DB::select($query);
+        $product_types = ProductType::all();
         $min_quantity = 10;
 
-        return view('products.index', compact(['products', 'min_quantity']));
+        return view('products.index', compact(['products', 'min_quantity', 'product_types']));
     }
 
     /**
@@ -70,11 +76,25 @@ class ProductController extends Controller
      * Show the form for editing the specified resource.
      *
      * @param Product $product
-     * @return void
      */
-    public function edit(Product $product)
+    public function edit($id)
     {
-        //
+        $query = "SELECT 
+                    p.id, p.name, p.unit, p.sell_price, p.sell_quantity_base, pt.type, ROUND(AVG(invoices.unit_price),2) as avg_price
+                    FROM products AS p
+                    LEFT JOIN product_types AS pt
+                    ON p.product_type = pt.id
+                    LEFT JOIN invoices
+                    ON invoices.product_id = p.id
+                    WHERE p.id = '$id'
+                    GROUP BY p.id, p.name, p.unit, p.sell_price, p.sell_quantity_base, pt.type
+                    ";
+
+        $product = DB::select($query);
+        $units = ['kg', 'grams', 'qty.', 'cm', 'liters'];
+        $types = ProductType::get();
+
+        return view('products.edit', compact('product', 'units', 'types'));
     }
 
     /**
@@ -84,11 +104,11 @@ class ProductController extends Controller
      * @param $name
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function update(ProductsUpdateSellPriceRequest $request, $name)
+    public function update(ProductUpdateRequest $request, Product $product)
     {
-        Product::where('name', $name)->update(['sell_price' => $request->sell_price]);
+        $product->update($request->all());
 
-        return redirect()->route('products.index')->with('success', 'Successful update product sell price.');
+        return redirect()->route('products.edit', $request->id)->with('success', 'Successful update product.');
     }
 
     /**
@@ -100,14 +120,5 @@ class ProductController extends Controller
     public function destroy(Product $warehouse)
     {
         //
-    }
-
-    public function isADrink(Request $request)
-    {
-        Product::where('id', $request->id)->update([
-            'is_drink' => $request->has('is_drink')
-        ]);
-
-        return back();
     }
 }
