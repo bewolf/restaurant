@@ -13,4 +13,5 @@ const mix = require('laravel-mix');
 
 mix.js('resources/js/app.js', 'public/js')
     .js('resources/js/create_new_order_page', 'public/js')
+    .js('resources/js/create_new_invoice_page', 'public/js')
     .sass('resources/sass/app.scss', 'public/css');
