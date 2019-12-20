@@ -45,7 +45,6 @@ class InvoiceController extends Controller
      */
     public function store(InvoiceStoreRequest $request)
     {
-//        $data = [];
         for ($i = 0; $i < count($request->product_name); $i++) {
             $data[] = [
                 'number' => $request->number,
@@ -58,7 +57,6 @@ class InvoiceController extends Controller
                 'updated_at' => now(),
             ];
         }
-//        dd($data);
         if (Invoice::CheckInvoiceNumberExists($request)) {
             return back()->with('error', 'Duplicate Invoice number')->withInput();
         }
@@ -70,13 +68,6 @@ class InvoiceController extends Controller
                 Product::where('name', $data[$i]['product_name'])
                     ->increment('quantity', $data[$i]['quantity']);
 
-                //  Need to be refactored
-//                if ( Product::where('name', $data[$i]['product_name'])->pluck('unit')->first() == $data[$i]['unit']) {
-//                    Product::where('name', $data[$i]['product_name'])
-//                        ->increment('quantity', $data[$i]['quantity']);
-//                } else {
-//                    return redirect()->route('invoice.create')->with('error', 'Wrong unit of product ' . $data[$i]['product_name']);
-//                }
             } else {
                 Product::insert([
                     'name' => $data[$i]['product_name'],
@@ -102,7 +93,6 @@ class InvoiceController extends Controller
             ];
 
         }
-
 
         Invoice::insert($data_for_invoice);
 
@@ -162,9 +152,9 @@ class InvoiceController extends Controller
 
     public function statistics()
     {
-        $products = DB::select('SELECT id, name 
-                                      FROM products ');
+        $products = DB::select('SELECT id, name FROM products ');
         $result = null;
+
         if (request()->all()) {
 
             request()->validate([
@@ -174,19 +164,17 @@ class InvoiceController extends Controller
                 'min_product_quantity' => 'nullable|integer|min:0'
             ]);
 
-            $request = request()->all();
-            $start_date = $request['start_date'];
-            $end_date = $request['end_date'] . ' 23:59:59';
-            $product = $request['product'];
+            $start_date = request()->start_date;
+            $end_date = request()->end_date . ' 23:59:59';
+            $product = request()->product;
             if (request()->has('min_product_quantity')) {
-                $min_product_quantity = $request['min_product_quantity'];
+                $min_product_quantity = request()->min_product_quantity;
             }
 
-            $query = "
-                    SELECT invoices.number, invoices.created_at
-                    FROM invoices 
-                    WHERE created_at > '$start_date'  
-                    AND created_at < '$end_date'";
+            $query = "SELECT invoices.number, invoices.created_at
+                        FROM invoices 
+                        WHERE created_at > '$start_date'  
+                        AND created_at < '$end_date'";
 
             if ($product != 'all') {
                 $query .= " AND product_id = '$product' ";
@@ -194,7 +182,7 @@ class InvoiceController extends Controller
             if (request()->has('min_product_quantity') && $min_product_quantity > 0) {
                 $query .= " AND quantity >= '$min_product_quantity' ";
             }
-            $query .= " GROUP BY invoices . number, invoices . created_at";
+            $query .= " GROUP BY invoices.number, invoices.created_at";
 
             $result = DB::select($query);
         }

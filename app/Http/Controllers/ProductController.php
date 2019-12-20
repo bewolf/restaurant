@@ -7,11 +7,13 @@ use App\Models\Food;
 use App\Models\FoodsProducts;
 use App\Models\Product;
 use App\Models\ProductType;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 class ProductController extends Controller
 {
+    const UNIT_TYPES = ['kg', 'grams', 'qty.', 'cm', 'liters'];
+    const MIN_QUANTITY_FOR_MESSAGE = 10;
+
     public function __construct()
     {
         $this->middleware('can:manager');
@@ -35,7 +37,7 @@ class ProductController extends Controller
 
         $products = DB::select($query);
         $product_types = ProductType::all();
-        $min_quantity = 10;
+        $min_quantity = self::MIN_QUANTITY_FOR_MESSAGE;
 
         return view('products.index', compact(['products', 'min_quantity', 'product_types']));
     }
@@ -51,28 +53,6 @@ class ProductController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request $request
-     * @return void
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param Product $product
-     * @return void
-     */
-    public function show(Product $product)
-    {
-        //
-    }
-
-    /**
      * Show the form for editing the specified resource.
      *
      * @param Product $product
@@ -80,18 +60,17 @@ class ProductController extends Controller
     public function edit($id)
     {
         $query = "SELECT 
-                    p.id, p.name, p.unit, p.sell_price, p.sell_quantity_base, pt.type, ROUND(AVG(invoices.unit_price),2) as avg_price
-                    FROM products AS p
-                    LEFT JOIN product_types AS pt
-                    ON p.product_type = pt.id
+                    products.id, products.name, products.unit, products.sell_price, products.sell_quantity_base, product_types.type, ROUND(AVG(invoices.unit_price),2) as avg_price
+                    FROM products
+                    LEFT JOIN product_types
+                    ON products.product_type = product_types.id
                     LEFT JOIN invoices
-                    ON invoices.product_id = p.id
-                    WHERE p.id = '$id'
-                    GROUP BY p.id, p.name, p.unit, p.sell_price, p.sell_quantity_base, pt.type
-                    ";
+                    ON invoices.product_id = products.id
+                    WHERE products.id = '$id'
+                    GROUP BY products.id, products.name, products.unit, products.sell_price, products.sell_quantity_base, product_types.type";
 
         $product = DB::select($query);
-        $units = ['kg', 'grams', 'qty.', 'cm', 'liters'];
+        $units = self::UNIT_TYPES;
         $types = ProductType::get();
 
         return view('products.edit', compact('product', 'units', 'types'));

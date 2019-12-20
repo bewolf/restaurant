@@ -8,9 +8,7 @@ use App\Models\Role;
 use App\Models\User;
 use App\Http\Requests\UserUpdateRequest;
 use App\Http\Requests\UserStoreRequest;
-use App\Models\UsersRoles;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Str;
 
 class UserController extends Controller
 {
@@ -57,20 +55,9 @@ class UserController extends Controller
     }
 
     /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\User $user
-     * @return \Illuminate\Http\Response
-     */
-    public function show(User $user)
-    {
-        //
-    }
-
-    /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\User $user
+     * @param  \App\Models\User $user
      * @return \Illuminate\Http\Response
      */
     public function edit()
@@ -95,7 +82,7 @@ class UserController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\User $user
+     * @param  \App\Models\User $user
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)
@@ -133,7 +120,12 @@ class UserController extends Controller
     {
         auth()->user()->update(['password' => Hash::make($request->get('password'))]);
 
-        return back()->with('success', 'Success changes password');
+        return redirect()->route('user.edit', auth()->id())->with('success', 'Success changes password');
     }
 
+    public function stats()
+    {
+        $users = User::paginate(10);
+        return view('user.stats', compact('users'));
+    }
 }

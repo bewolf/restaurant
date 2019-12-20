@@ -19,6 +19,7 @@ class GuestController extends Controller
 
     public function store(FirstManagerStoreRequest $request)
     {
+
         $request['password'] = \Hash::make($request['password']);
         $manager_role = 3;
         $shift_manager_role = 2;
@@ -34,6 +35,5 @@ class GuestController extends Controller
         ]);
 
         return redirect()->route('index')->with('success', 'Successful created manager');
-
     }
 }

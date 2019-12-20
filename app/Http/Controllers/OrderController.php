@@ -8,7 +8,6 @@ use App\Models\Product;
 use App\Models\ProductType;
 use App\Models\Tables;
 use Illuminate\Support\Facades\DB;
-use phpDocumentor\Reflection\Types\Self_;
 
 class OrderController extends Controller
 {
@@ -18,6 +17,7 @@ class OrderController extends Controller
         $products = Product::get();
         $types = ProductType::get();
         $order_num = DB::select('SELECT MAX(order_id) as num_of_orders FROM orders')[0]->num_of_orders;
+
         if (null === $order_num) {
             $order_num = 1;
         } else {

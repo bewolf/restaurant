@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Http\Requests\CreateProductTypeRequest;
 use App\Models\Product;
 use App\Models\ProductType;
-use Illuminate\Http\Request;
 
 class ProductTypesController extends Controller
 {
@@ -23,17 +22,8 @@ class ProductTypesController extends Controller
     public function index()
     {
         $product_types = ProductType::paginate(10);
-        return view('product_types.index', compact('product_types'));
-    }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
+        return view('product_types.index', compact('product_types'));
     }
 
     /**
@@ -45,33 +35,12 @@ class ProductTypesController extends Controller
     public function store(CreateProductTypeRequest $request)
     {
         $product_type = $request->product_type;
+
         ProductType::insert([
             'type' => $product_type
         ]);
 
         return redirect()->route('product-types.index')->with('success', 'Successful add Product Type');
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
     }
 
     /**
@@ -83,8 +52,7 @@ class ProductTypesController extends Controller
      */
     public function update(CreateProductTypeRequest $request, $id)
     {
-        ProductType::where('id', '=', $id)
-            ->update(['type' => $request->product_type]);
+        ProductType::where('id', '=', $id)->update(['type' => $request->product_type]);
 
         return redirect()->route('product-types.index')->with('success', 'Successful update Product Type');
     }
@@ -97,12 +65,11 @@ class ProductTypesController extends Controller
      */
     public function destroy($id)
     {
-        if (count(Product::where('product_type', '=', $id)->get()) == 0) {
+        if (Product::where('product_type', '=', $id)->count() === 0) {
             ProductType::destroy($id);
 
             return redirect()->route('product-types.index')->with('success', 'Successful deleted Product Type');
         }
-
         return redirect()->route('product-types.index')->with('error', 'Can not delete this Product Type. This product type is used in some Products.');
     }
 }
