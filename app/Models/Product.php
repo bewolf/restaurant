@@ -11,7 +11,7 @@ class Product extends Model
 
     public function foods()
     {
-       return $this->belongsToMany(Food::class, 'foods_products');
+        return $this->belongsToMany(Food::class, 'foods_products');
     }
 
     /**

@@ -9,6 +9,6 @@ class Tables extends Model
     public $timestamps = false;
 
     protected $fillable = [
-        'zone', 'is_available'
+        'is_available'
     ];
 }

@@ -3,7 +3,6 @@
 namespace App\Models;
 
 use App\Mail\UserCreated;
-use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -56,6 +55,7 @@ class User extends Authenticatable
         if (!self::createUsername($data['name'])) {
             return redirect()->route('user.create')->with('error', 'Need at least two names');
         }
+
         $data['username'] = self::createUsername($data['name']);
         $data['password'] = Hash::make($password);
 
@@ -68,11 +68,11 @@ class User extends Authenticatable
                 'role_id' => $roles[$i],
             ]);
         }
+
         self::sendMail($data, $password);
 
         return redirect()->route('user.create')->with('success', 'Successful created user')->withInput();
     }
-
 
     private static function sendMail($data, $password)
     {
