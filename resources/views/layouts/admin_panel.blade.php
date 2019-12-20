@@ -7,16 +7,9 @@
     </div>
 
     <div id="warehouse_panel">
-        <h3 class="toast-header justify-content-center mb-0">Foods</h3>
-        <a href="{{route('food.create')}}" class="list-group-item list-group-item-action">Add new food</a>
-        <a href="{{route('food.index')}}" class="list-group-item list-group-item-action">Show foods</a>
-        <a href="#" class="list-group-item list-group-item-action">Search by criteria</a>
-    </div>
-
-    <div id="warehouse_panel">
-        <h3 class="toast-header justify-content-center mb-0">Drinks</h3>
-        <a href="#" class="list-group-item list-group-item-action">Add new drink</a>
-        <a href="#" class="list-group-item list-group-item-action">Show foods</a>
+        <h3 class="toast-header justify-content-center mb-0">Foods & Drinks</h3>
+        <a href="#" class="list-group-item list-group-item-action">Add new food/drink</a>
+        <a href="#" class="list-group-item list-group-item-action">Show foods/drinks</a>
         <a href="#" class="list-group-item list-group-item-action">Search by criteria</a>
     </div>
 
@@ -34,15 +27,13 @@
             <a href="{{route('stats')}}" class="list-group-item list-group-item-action">Worker stats</a>
         </div>
     @endcan
-    <div id="warehouse_panel">
+    <div id="user_panel">
+        <h3 class="toast-header justify-content-center mb-0">Miscellaneous</h3>
+        <a href="{{route('product-types.index')}}" class="list-group-item list-group-item-action">Product types</a>
+        <a href="{{route('table.index')}}" class="list-group-item list-group-item-action">Tables</a>
+    </div>
+    <div id="warehouse_panel">.
         <h3 class="toast-header justify-content-center mb-0">Warehouse</h3>
         <a href="{{route('products.index')}}" class="list-group-item list-group-item-action">Availability</a>
     </div>
-    @canany(['waiter', 'bartender'])
-        <div id="warehouse_panel">
-            <h3 class="toast-header justify-content-center mb-0">Warehouse</h3>
-            <a href="{{route('products.index')}}" class="list-group-item list-group-item-action">Availability</a>
-        </div>
-    @endcanany
-
 </ul>
