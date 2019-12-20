@@ -20,7 +20,5 @@
     <div class="row">
         <p>You have <strong>{{$tables}}</strong> tables</p>
     </div>
-    <div class="row">Note: the best way to change number of tables is during off-hours when no orders are accepted</div>
-
 
 @endsection
