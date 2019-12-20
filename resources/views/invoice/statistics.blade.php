@@ -45,7 +45,7 @@
                 <p class="col-md-3 ">
                     <a class="btn btn-info" href="{{route('invoice.show', [$item->number])}}">{{$item->number}}</a>
                 </p>
-                <p class=" col-md-3"> {{$item->created_at}}</p>
+                <p class=" col-md-3"><?= date('Y-m-d', strtotime($item->created_at))?> </p>
             </div>
         @endforeach
     @endisset
