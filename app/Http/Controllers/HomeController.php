@@ -25,15 +25,7 @@ class HomeController extends Controller
     public function index()
     {
         $current_user_id = auth()->id();
-        $query = "SELECT orders.user_id, orders.table_id, orders.order_id
-                    FROM orders
-                    LEFT JOIN products
-                    ON orders.product_id = products.id
-                    WHERE orders.user_id = $current_user_id
-                    AND ISNULL(orders.finished_at)
-                    GROUP BY  orders.table_id, orders.user_id, orders.order_id";
-
-        $orders = DB::select($query);
+        $orders = null;
         $tables = Tables::all();
         return view('home', compact('orders', 'tables'));
     }

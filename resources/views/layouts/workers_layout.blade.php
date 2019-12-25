@@ -2,7 +2,7 @@
     <div class="row ml-1"><h3>New order at table №</h3></div>
     <div class="row col-md-12 mb-4" id="tables">
         @foreach($tables as $table)
-            <a href="{{$table->is_available ? route('order.create', ['table' => $table->id]): "#" }}"
+            <a href="{{ route('order.create', ['table' => $table->id]) }}"
                class="{{$table->is_available ? 'btn btn-success' : 'btn btn-danger'}} mr-1 mb-1">
                 {{$table->id}}
             </a>

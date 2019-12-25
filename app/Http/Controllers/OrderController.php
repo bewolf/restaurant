@@ -7,104 +7,155 @@ use App\Models\Order;
 use App\Models\Product;
 use App\Models\ProductType;
 use App\Models\Tables;
-use Illuminate\Support\Facades\DB;
+use App\Models\OrdersDetails;
 
 class OrderController extends Controller
 {
 
-    public function create()
+    public function create(int $table)
     {
         $products = Product::get();
         $types = ProductType::get();
-        $order_num = DB::select('SELECT MAX(order_id) as num_of_orders FROM orders')[0]->num_of_orders;
+        $order_id = $this->findOrder($table);
+        $order_details = null;
 
-        if (null === $order_num) {
-            $order_num = 1;
-        } else {
-            ++$order_num;
+        if ($order_id) {
+            $order_details = $this->getOrderDetails($order_id);
         }
 
-        return view('orders.create', compact('products', 'types', 'order_num'));
+        return view('orders.create', compact('products', 'types', 'order_id', 'order_details'));
     }
 
     public function edit($order)
     {
         $order = Order::where('order_id', '=', $order)->get();
         return view('orders.edit', compact('order'));
-
     }
 
     public function update($order_id)
     {
     }
 
-    public function store(CreateOrderRequest $request)
+    public function process(CreateOrderRequest $request, int $order_id)
     {
-        $table_num = $request->table_num;
-        $order_num = $request->order_num;
-        $products = $request->product;
-        $quantity = $request->quantity;
-        $products_data = [];
-        $insufficient_quantity = [];
+        $table_id = $request->input('table_id');
+        $message = 'Successfully update order';
 
-        // Group if entered duplicate product name
+        if (!$order_id) {
+            $order_id = $this->createOrder($table_id);
+            $message = 'Successfully create order';
+        }
+
+        $success = $this->updateOrderDetails($order_id, $request->all());
+
+        if (!$success) {
+
+            return redirect()->back()->with('error', 'Not enough quantity');
+        }
+
+        return redirect()->route('order.create', ['table' =>  $table_id])->with('success', $message);
+    }
+
+    public function close(int $order_id)
+    {
+        $bill_amount = $this->getFinalBillAmount($order_id);
+        $order = Order::findOrFail($order_id);
+        $order->update([
+            'bill_amount' => $bill_amount,
+            'finished_at' => date("Y-m-d H:i:s")
+        ]);
+
+        Tables::where('id', $order->table_id)->update(['is_available' => true]);
+
+        return redirect()->route('home')->with('success', "Order № $order->id was successfully closed with total amount of $bill_amount.");
+    }
+
+    private function getFinalBillAmount(int $order_id)
+    {
+        $order_details = OrdersDetails::getDetails($order_id);
+
+        $total = 0;
+
+        foreach ($order_details as $order) {
+
+            $total += $order->product_quantity * $order->product_price;
+        }
+
+        return $total;
+    }
+
+    private function createOrder($table_id)
+    {
+        $data['table_id'] = $table_id;
+        $data['user_id'] = auth()->id();
+        $order = Order::create($data);
+
+        Tables::where('id', $table_id)->update(['is_available' => false]);
+
+        return $order->id;
+    }
+
+    private function updateOrderDetails(int $order_id, array $data)
+    {
+        $products = $data['products'];
+        $quantities = $data['quantities'];
+
+        $is_all_products_available = $this->checkProductsQuantity($products, $quantities);
+
+        if (!$is_all_products_available) {
+            return false;
+        }
+
+        $this->writeInDb($order_id, $products, $quantities);
+
+        return true;
+    }
+
+    private function checkProductsQuantity(array $products, array $quantities)
+    {
         for ($i = 0; $i < count($products); $i++) {
+            $product = Product::findByName($products[$i])->first();
+            $is_available = $product->checkQuantity($quantities[$i]);
 
-            if (array_key_exists($products[$i], $products_data)) {
-
-                $products_data += $quantity[$i];
-            } else {
-
-                $products_data[$products[$i]] = $quantity[$i];
+            if (!$is_available) {
+                return false;
             }
         }
 
-        // Check Products availability
-        foreach ($products_data as $key => $ordered_quantity) {
+        return true;
+    }
 
-            $current_product = Product::where('name', $key)->get()->toArray();
-            $current_product_sell_quantity_base = $current_product[0]['sell_quantity_base'];
-            $current_product_quantity = $current_product[0]['quantity'];
-            $max_orders = $current_product_quantity / $current_product_sell_quantity_base;
+    private function writeInDb(int $order_id, array $products, array $quantities)
+    {
+        for ($i = 0; $i < count($products); $i++) {
+            $product = Product::findByName($products[$i])->first();
+            $product->updateQuantity($quantities[$i]);
 
-            if ($ordered_quantity > $max_orders) {
-
-                $insufficient_quantity[$key] = $ordered_quantity - $max_orders;
-            }
-        }
-        // If there is insufficient availability of some Product
-        if ($insufficient_quantity) {
-            dd('TODO');
-            return back()->withInput();
-        }
-
-        //Create Order, update Products and Table if everything is OK
-        foreach ($products_data as $key => $ordered_quantity) {
-
-            $current_product = Product::where('name', $key)->get()->toArray();
-            $current_product_sell_quantity_base = $current_product[0]['sell_quantity_base'];
-            $current_product_quantity = $current_product[0]['quantity'];
-            $ordered_quantity_with_base = $ordered_quantity * $current_product_sell_quantity_base;
-
-            Product::where('name', $key)->update(['quantity' => $current_product_quantity - $ordered_quantity_with_base]);
-            Order::insert([
-                'table_id' => $table_num,
-                'user_id' => auth()->id(),
-                'order_id' => $order_num,
-                'product_id' => $current_product[0]['id'],
-                'product_quantity' => $ordered_quantity,
+            OrdersDetails::insert([
+                'order_id' => $order_id,
+                'product_id' => $product->id,
+                'product_quantity' => $quantities[$i],
+                'product_price' => $product->sell_price,
+                'created_at' => now(),
             ]);
         }
 
-        Tables::where('id', $table_num)->update(['is_available' => false]);
-
-        return redirect()->route('home')->with('success', 'Successfully create order');
-
-
+        return true;
     }
 
-    private function array_has_dupes($array)
+    private function findOrder(int $table_id)
     {
-        return count($array) !== count(array_unique($array));
+        $table = Tables::findOrFail($table_id);
+
+        if ($table->is_available) {
+            return 0;
+        }
+
+        return Order::where('table_id', $table_id)->latest()->first()->id;
+    }
+
+    private function getOrderDetails($order_id)
+    {
+        return OrdersDetails::getDetails($order_id);
     }
 }
