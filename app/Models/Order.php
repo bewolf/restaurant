@@ -7,11 +7,11 @@ use Illuminate\Database\Eloquent\Model;
 class Order extends Model
 {
     protected $fillable = [
-        'table_id', 'product_id', 'product_quantity', 'finished_at'
+        'user_id' ,'table_id', 'bill_amount', 'finished_at'
     ];
 
-    public function products()
-    {
-        return $this->belongsToMany(Product::class, 'product_id');
-    }
+    // public function products()
+    // {
+    //     return $this->belongsToMany(Product::class, 'product_id');
+    // }
 }

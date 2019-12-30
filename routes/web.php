@@ -48,5 +48,7 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::resource('table', 'TablesController');
 
-    Route::resource('order', 'OrderController');
+    Route::get('/order/create/{table}', 'OrderController@create')->name('order.create');
+    Route::post('/order/store/{order_id}', 'OrderController@process')->name('order.process');
+    Route::get('/order/close/{order_id}', 'OrderController@close')->name('order.close');
 });

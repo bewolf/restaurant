@@ -24,10 +24,11 @@ class CreateOrderRequest extends FormRequest
     public function rules()
     {
         return [
-            'table_num' => 'required|integer',
-            'order_num' => 'required|integer',
-            'product' => 'required',
-            'quantity' => 'required',
+            'table_id' => 'required|integer',
+            'products' => 'required|array',
+            'products.*' => 'required|string',
+            'quantities' => 'required|array',
+            'quantities.*' => 'required|integer',
         ];
     }
 }

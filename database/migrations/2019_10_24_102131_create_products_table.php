@@ -17,7 +17,7 @@ class CreateProductsTable extends Migration
             $table->bigIncrements('id');
             $table->string('name');
             $table->set('unit', ['kg', 'grams', 'qty.', 'cm', 'liters']);
-            $table->unsignedInteger('quantity');
+            $table->unsignedDecimal('quantity', 6, 2);
             $table->decimal('sell_price')->default(0.00);
             $table->decimal('sell_quantity_base')->default(0.00);
             $table->unsignedBigInteger('product_type')->nullable();

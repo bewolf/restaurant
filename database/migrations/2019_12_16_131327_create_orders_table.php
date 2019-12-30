@@ -15,17 +15,15 @@ class CreateOrdersTable extends Migration
     {
         Schema::create('orders', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->unsignedBigInteger('table_id');
             $table->unsignedBigInteger('user_id');
-            $table->unsignedInteger('order_id');
-            $table->unsignedBigInteger('product_id');
-            $table->unsignedDecimal('product_quantity');
-            $table->timestamp('finished_at')->nullable();
-            $table->dateTime('updated_at')->useCurrent();
+            $table->unsignedBigInteger('table_id');
+            $table->unsignedDecimal('bill_amount', 6, 2)->nullable();
             $table->dateTime('created_at')->useCurrent();
+            $table->dateTime('updated_at')->useCurrent();
+            $table->dateTime('finished_at')->nullable();
 
             $table->foreign('user_id')->references('id')->on('users');
-            $table->foreign('product_id')->references('id')->on('products');
+
         });
     }
 

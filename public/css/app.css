@@ -74,12 +74,18 @@
   height: 100px;
   width: 100px;
   font-size: 2.5em;
+<<<<<<< HEAD
   display: -webkit-box;
   display: flex;
   -webkit-box-align: center;
           align-items: center;
   -webkit-box-pack: center;
           justify-content: center;
+=======
+  display: flex;
+  align-items: center;
+  justify-content: center;
+>>>>>>> origin/orders
 }
 
 #workersTable div.sticky-top {
@@ -104,24 +110,36 @@
   height: 100px;
   width: 100px;
   font-size: 1.5em;
+<<<<<<< HEAD
   display: -webkit-box;
   display: flex;
   -webkit-box-align: center;
           align-items: center;
   -webkit-box-pack: center;
           justify-content: center;
+=======
+  display: flex;
+  align-items: center;
+  justify-content: center;
+>>>>>>> origin/orders
 }
 
 #displayed_products button {
   height: 80px;
   width: 80px;
   font-size: 1.3em;
+<<<<<<< HEAD
   display: -webkit-box;
   display: flex;
   -webkit-box-align: center;
           align-items: center;
   -webkit-box-pack: center;
           justify-content: center;
+=======
+  display: flex;
+  align-items: center;
+  justify-content: center;
+>>>>>>> origin/orders
 }
 
 #current_product_for_cart,
@@ -142,12 +160,18 @@
   height: 50px;
   width: 50px;
   font-size: 2.5em;
+<<<<<<< HEAD
   display: -webkit-box;
   display: flex;
   -webkit-box-align: center;
           align-items: center;
   -webkit-box-pack: center;
           justify-content: center;
+=======
+  display: flex;
+  align-items: center;
+  justify-content: center;
+>>>>>>> origin/orders
 }
 
 #add_to_order {
@@ -157,12 +181,18 @@
 #current_product_for_cart_quantity {
   font-size: 2em;
   font-weight: bold;
+<<<<<<< HEAD
   display: -webkit-box;
   display: flex;
   -webkit-box-align: center;
           align-items: center;
   -webkit-box-pack: center;
           justify-content: center;
+=======
+  display: flex;
+  align-items: center;
+  justify-content: center;
+>>>>>>> origin/orders
 }
 
 #remove_row {
