@@ -1,4 +1,6 @@
 {
     "/js/app.js": "/js/app.js",
-    "/css/app.css": "/css/app.css"
+    "/css/app.css": "/css/app.css",
+    "/js/create_new_invoice_page.js": "/js/create_new_invoice_page.js",
+    "/js/create_new_order_page.js": "/js/create_new_order_page.js"
 }

@@ -1,3 +1,4 @@
+/public
 /node_modules
 /public/hot
 /public/storage
@@ -11,4 +12,3 @@ Homestead.yaml
 npm-debug.log
 yarn-error.log
 .idea
-/public
