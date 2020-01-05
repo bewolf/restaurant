@@ -9,7 +9,7 @@
         @endforeach
     </div>
 
-    @if($orders)
+    {{-- @if($orders)
         <h3 class="row col-md-12">Current tables with order</h3>
         @foreach($orders as $order)
             <div class="current_orders">
@@ -20,5 +20,5 @@
                 </form>
             </div>
         @endforeach
-    @endif
-</div>
+    @endif --}}
+</div>  
