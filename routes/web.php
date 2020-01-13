@@ -51,4 +51,9 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/order/create/{table}', 'OrderController@create')->name('order.create');
     Route::post('/order/store/{order_id}', 'OrderController@process')->name('order.process');
     Route::get('/order/close/{order_id}', 'OrderController@close')->name('order.close');
+    Route::get('/order/{order_id}', 'OrderController@show')->name('order.show');
+
+    Route::get('/statistics', 'StatisticsController@index')->name('statistics.index');
+    Route::post('/statistics', 'StatisticsController@show')->name('statistics.show');
+    Route::get('/statistics/today-orders', 'StatisticsController@todayOrders')->name('statistics.orders.today');
 });

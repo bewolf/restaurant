@@ -38,6 +38,7 @@ class OrderController extends Controller
 
     public function process(CreateOrderRequest $request, int $order_id)
     {
+        
         $table_id = $request->input('table_id');
         $message = 'Successfully update order';
 
@@ -67,7 +68,7 @@ class OrderController extends Controller
 
         Tables::where('id', $order->table_id)->update(['is_available' => true]);
 
-        return redirect()->route('home')->with('success', "Order № $order->id was successfully closed with total amount of $bill_amount.");
+        return redirect()->route('home')->with('success', "Order № $order->id wass successfully closed with total amount of $bill_amount");
     }
 
     private function getFinalBillAmount(int $order_id)
@@ -157,5 +158,11 @@ class OrderController extends Controller
     private function getOrderDetails($order_id)
     {
         return OrdersDetails::getDetails($order_id);
+    }
+
+    public function show($id)
+    {
+        $order = self::getOrderDetails($id);
+        return view('orders.show', compact('order' ,'id'));
     }
 }
