@@ -6,10 +6,10 @@
         <a href="{{route('invoice-statistics')}}" class="list-group-item list-group-item-action">Search by criteria</a>
     </div>
 
-    <div id="warehouse_panel">
+    <div id="orders_panel">
         <h3 class="toast-header justify-content-center mb-0">Orders</h3>
         <a href="{{route('statistics.orders.today')}}" class="list-group-item list-group-item-action">Today</a>
-        <a href="#" class="list-group-item list-group-item-action">Custom period</a>
+        <a href="{{route('statistics.orders')}}" class="list-group-item list-group-item-action">Custom period</a>
     </div>
 
     @can('manager')

@@ -56,4 +56,5 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/statistics', 'StatisticsController@index')->name('statistics.index');
     Route::post('/statistics', 'StatisticsController@show')->name('statistics.show');
     Route::get('/statistics/today-orders', 'StatisticsController@todayOrders')->name('statistics.orders.today');
+    Route::get('/statistics/custom-period-orders', 'StatisticsController@customPeriodOrders')->name('statistics.orders');
 });
